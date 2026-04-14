@@ -1,0 +1,29 @@
+const SUPABASE_URL = 'https://lolcljygjkclxlemsqaz.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_ck-tBxq12Vj5UFomrDkQvQ_ep2vlv1C';
+
+function isConfigured() {
+    return SUPABASE_URL && SUPABASE_ANON_KEY;
+}
+
+let supabase = null;
+
+function initSupabase() {
+    if (typeof window.supabase === 'undefined') {
+        console.error('❌ Supabase CDN no cargó. Verifica tu conexión a internet.');
+        return;
+    }
+    if (typeof window.supabase.createClient !== 'function') {
+        console.error('❌ Supabase createClient no disponible.');
+        return;
+    }
+    try {
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        console.log('✅ Supabase configurado correctamente');
+        console.log('URL:', SUPABASE_URL);
+    } catch (error) {
+        console.error('❌ Error creando cliente Supabase:', error.message);
+    }
+}
+
+initSupabase();
+const ADMIN_EMAIL = 'ministrylion@gmail.com';

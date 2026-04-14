@@ -1,9 +1,3 @@
-# Archivos de configuración sensibles
-js/config.js
-
-# Librerías descargadas (opcional, puedes subirlas)
-# js/supabase.min.js
-
 # Editor directories and files
 .vscode/
 .idea/
