@@ -4,7 +4,15 @@ let isAdmin = false;
 
 // Check if user is logged in on page load
 document.addEventListener('DOMContentLoaded', async () => {
+    // Verify Supabase is available
     if (!supabase) {
+        showSetupWarning();
+        return;
+    }
+    
+    // Check if auth module is available
+    if (!supabase.auth) {
+        console.error('Supabase Auth module not available');
         showSetupWarning();
         return;
     }
@@ -14,6 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         updateAuthUI(session);
     } catch (error) {
         console.error('Error checking auth:', error);
+        showSetupWarning();
     }
 });
 
