@@ -1,0 +1,23 @@
+# Archivos de configuración sensibles
+js/config.js
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Optional npm cache directory
+.npm
+
+# Node modules (if needed)
+# node_modules/

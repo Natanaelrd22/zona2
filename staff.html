@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff - Club de Conquistadores</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>🏕️ Club de Conquistadores</h1>
+            </div>
+            <button class="nav-toggle" onclick="toggleMenu()">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="staff.html" class="active">Staff</a></li>
+                <li><a href="aventureros.html">Dir. Aventureros</a></li>
+                <li><a href="conquistadores.html">Dir. Conquistadores</a></li>
+                <li><a href="guias.html">Dir. Guías</a></li>
+                <li><a href="historia.html">Historia Den.</a></li>
+                <li><a href="recursos.html">Recursos</a></li>
+                <li><a href="login.html" id="loginLink">Login</a></li>
+                <li><a href="#" id="logoutLink" style="display:none;" onclick="logout()">Cerrar Sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <h1>Staff</h1>
+            <button class="btn btn-primary admin-only" onclick="openStaffModal()">
+                + Nuevo Registro
+            </button>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="container">
+        <div id="staff-container" class="cards-grid">
+            <div class="loading">Cargando</div>
+        </div>
+    </div>
+
+    <!-- Staff Modal -->
+    <div id="staffModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Nuevo Registro</h2>
+                <button class="modal-close" onclick="closeModal('staffModal')">×</button>
+            </div>
+            
+            <form id="staffForm">
+                <input type="hidden" id="staffId">
+                
+                <div class="form-group">
+                    <label for="staffNombre">Nombre *</label>
+                    <input type="text" id="staffNombre" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="staffFoto">Foto</label>
+                    <input type="file" id="staffFoto" accept="image/*" onchange="previewImage(this, 'staffPreview')">
+                    <div id="staffPreview" style="margin-top: 1rem;"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="staffCargo">Cargo *</label>
+                    <input type="text" id="staffCargo" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="staffTelefono">Teléfono</label>
+                    <input type="tel" id="staffTelefono">
+                </div>
+                
+                <div id="staffAlert"></div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('staffModal')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 Club de Conquistadores. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/staff.js"></script>
+</body>
+</html>

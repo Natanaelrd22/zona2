@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración - Club de Conquistadores</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .header h1 {
+            color: #1e40af;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #6b7280;
+        }
+
+        .step {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+
+        .step h2 {
+            display: inline-block;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+
+        .step p, .step li {
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        .step ol, .step ul {
+            margin-left: 2rem;
+            margin-top: 1rem;
+        }
+
+        .step li {
+            margin-bottom: 0.5rem;
+        }
+
+        code {
+            background: #f3f4f6;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            color: #dc2626;
+            font-family: 'Courier New', monospace;
+        }
+
+        .code-block {
+            background: #1f2937;
+            color: #10b981;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-top: 1rem;
+            transition: transform 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .warning {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+
+        .success {
+            background: #dcfce7;
+            border-left: 4px solid #16a34a;
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏕️ Club de Conquistadores</h1>
+            <p>Guía de Configuración Rápida</p>
+        </div>
+
+        <div class="warning">
+            <strong>⚠️ Importante:</strong> Esta aplicación necesita configurarse con Supabase para funcionar. 
+            Sigue estos pasos antes de usar la aplicación.
+        </div>
+
+        <div class="step">
+            <h2><span class="step-number">1</span>Crear Cuenta en Supabase</h2>
+            <ol>
+                <li>Ve a <a href="https://supabase.com" target="_blank" style="color: #1e40af;">supabase.com</a></li>
+                <li>Haz clic en <strong>"Start your project"</strong> o <strong>"Sign In"</strong></li>
+                <li>Crea una cuenta gratuita con GitHub, GitLab o correo electrónico</li>
+            </ol>
+            <a href="https://supabase.com" target="_blank" class="btn">Ir a Supabase →</a>
+        </div>
+
+        <div class="step">
+            <h2><span class="step-number">2</span>Crear un Nuevo Proyecto</h2>
+            <ol>
+                <li>En el panel de Supabase, haz clic en <strong>"New Project"</strong></li>
+                <li>Configura:
+                    <ul>
+                        <li><strong>Name:</strong> Club de Conquistadores</li>
+                        <li><strong>Database Password:</strong> (elige una contraseña segura)</li>
+                        <li><strong>Region:</strong> La más cercana a tu ubicación</li>
+                    </ul>
+                </li>
+                <li>Haz clic en <strong>"Create new project"</strong></li>
+                <li>Espera 2 minutos a que se configure</li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <h2><span class="step-number">3</span>Ejecutar el Script SQL</h2>
+            <ol>
+                <li>En el panel izquierdo, haz clic en <strong>"SQL Editor"</strong></li>
+                <li>Haz clic en <strong>"New query"</strong></li>
+                <li>Abre el archivo <code>database/schema.sql</code> de tu proyecto</li>
+                <li>Copia TODO el contenido</li>
+                <li>Pégalo en el editor SQL de Supabase</li>
+                <li>Haz clic en <strong>"Run"</strong> (o Ctrl+Enter)</li>
+            </ol>
+            <div class="success">
+                ✅ ¡Listo! Todas las tablas y políticas fueron creadas
+            </div>
+        </div>
+
+        <div class="step">
+            <h2><span class="step-number">4</span>Crear Usuario Administrador</h2>
+            <ol>
+                <li>Ve a <strong>Authentication > Users</strong></li>
+                <li>Haz clic en <strong>"Add user"</strong> > <strong>"Create new user"</strong></li>
+                <li>Ingresa:
+                    <ul>
+                        <li><strong>Email:</strong> <code>ministrylion@gmail.com</code></li>
+                        <li><strong>Password:</strong> <code>Admin</code></li>
+                        <li><strong>Email Confirm:</strong> ✅ Marca esta casilla</li>
+                    </ul>
+                </li>
+                <li>Haz clic en <strong>"Create user"</strong></li>
+            </ol>
+            <div class="success">
+                ✅ ¡El administrador está creado!
+            </div>
+        </div>
+
+        <div class="step">
+            <h2><span class="step-number">5</span>Obtener Credenciales</h2>
+            <ol>
+                <li>Ve a <strong>Project Settings</strong> (ícono de engranaje ⚙️)</li>
+                <li>Haz clic en <strong>"API"</strong></li>
+                <li>Copia estos dos valores:
+                    <ul>
+                        <li><strong>Project URL:</strong> Se ve así: <code>https://xxxxx.supabase.co</code></li>
+                        <li><strong>anon/public:</strong> Una clave larga que empieza con <code>eyJ...</code></li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <h2><span class="step-number">6</span>Configurar el Archivo config.js</h2>
+            <p>Abre el archivo <code>js/config.js</code> y reemplaza:</p>
+            
+            <div class="code-block">
+// Antes (placeholder):
+const SUPABASE_URL = 'https://placeholder.supabase.co';
+const SUPABASE_ANON_KEY = 'placeholder-key';
+
+// Después (tus credenciales):
+const SUPABASE_URL = 'https://tu-proyecto.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
+            </div>
+
+            <p><strong>¡Guarda el archivo!</strong></p>
+        </div>
+
+        <div class="step">
+            <h2><span class="step-number">7</span>¡Ejecutar la Aplicación!</h2>
+            <p>Elige una opción:</p>
+            <ol>
+                <li><strong>Opción 1:</strong> Doble clic en <code>index.html</code></li>
+                <li><strong>Opción 2:</strong> Ejecuta en terminal:
+                    <div class="code-block">python -m http.server 8000</div>
+                    Luego abre: <code>http://localhost:8000</code>
+                </li>
+                <li><strong>Opción 3:</strong> Usa Live Server en VS Code</li>
+            </ol>
+            <div class="success">
+                🎉 ¡Tu aplicación está funcionando!
+            </div>
+        </div>
+
+        <div class="step">
+            <h2>🎯 Cómo Usar</h2>
+            <ol>
+                <li><strong>Iniciar sesión:</strong> Ve a Login y usa:
+                    <ul>
+                        <li>Email: <code>ministrylion@gmail.com</code></li>
+                        <li>Contraseña: <code>Admin</code></li>
+                    </ul>
+                </li>
+                <li><strong>Gestionar Staff:</strong> Crea, edita y elimina registros</li>
+                <li><strong>Directorios:</strong> Aventureros, Conquistadores, Guías</li>
+                <li><strong>Historia:</strong> Edita la historia del denominador</li>
+                <li><strong>Recursos:</strong> Crea categorías y sube archivos</li>
+            </ol>
+        </div>
+
+        <div class="warning">
+            <strong>📖 Guía Completa:</strong> Para instrucciones más detalladas, lee el archivo 
+            <code>GUIA_DE_CONFIGURACION.md</code>
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="index.html" class="btn">Ir a la Aplicación →</a>
+        </div>
+    </div>
+</body>
+</html>

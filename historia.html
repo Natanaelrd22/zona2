@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historia Den. - Club de Conquistadores</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>🏕️ Club de Conquistadores</h1>
+            </div>
+            <button class="nav-toggle" onclick="toggleMenu()">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="staff.html">Staff</a></li>
+                <li><a href="aventureros.html">Dir. Aventureros</a></li>
+                <li><a href="conquistadores.html">Dir. Conquistadores</a></li>
+                <li><a href="guias.html" class="active">Dir. Guías</a></li>
+                <li><a href="historia.html">Historia Den.</a></li>
+                <li><a href="recursos.html">Recursos</a></li>
+                <li><a href="login.html" id="loginLink">Login</a></li>
+                <li><a href="#" id="logoutLink" style="display:none;" onclick="logout()">Cerrar Sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <h1>Historia del Denominador</h1>
+            <button id="editBtn" class="btn btn-primary admin-only" onclick="enableEdit()" style="display: none;">
+                Editar
+            </button>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="container">
+        <div id="historia-container" class="loading">Cargando</div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="historiaModal" class="modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <div class="modal-header">
+                <h2>Editar Historia</h2>
+                <button class="modal-close" onclick="closeModal('historiaModal')">×</button>
+            </div>
+            
+            <form id="historiaForm">
+                <div class="form-group">
+                    <label for="historiaFoto">Foto</label>
+                    <input type="file" id="historiaFoto" accept="image/*" onchange="previewImage(this, 'historiaPreview')">
+                    <div id="historiaPreview" style="margin-top: 1rem;"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="historiaContenido">Contenido *</label>
+                    <textarea id="historiaContenido" rows="15" required style="resize: vertical;"></textarea>
+                </div>
+                
+                <div id="historiaAlert"></div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('historiaModal')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 Club de Conquistadores. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/historia.js"></script>
+</body>
+</html>

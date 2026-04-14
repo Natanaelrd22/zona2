@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dir. Conquistadores - Club de Conquistadores</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>🏕️ Club de Conquistadores</h1>
+            </div>
+            <button class="nav-toggle" onclick="toggleMenu()">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="staff.html">Staff</a></li>
+                <li><a href="aventureros.html">Dir. Aventureros</a></li>
+                <li><a href="conquistadores.html" class="active">Dir. Conquistadores</a></li>
+                <li><a href="guias.html">Dir. Guías</a></li>
+                <li><a href="historia.html">Historia Den.</a></li>
+                <li><a href="recursos.html">Recursos</a></li>
+                <li><a href="login.html" id="loginLink">Login</a></li>
+                <li><a href="#" id="logoutLink" style="display:none;" onclick="logout()">Cerrar Sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <h1>Directiva Conquistadores</h1>
+            <button class="btn btn-primary admin-only" onclick="openConquistadoresModal()">
+                + Nuevo Registro
+            </button>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="container">
+        <div id="conquistadores-container" class="cards-grid">
+            <div class="loading">Cargando</div>
+        </div>
+    </div>
+
+    <!-- Conquistadores Modal -->
+    <div id="conquistadoresModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Nuevo Registro</h2>
+                <button class="modal-close" onclick="closeModal('conquistadoresModal')">×</button>
+            </div>
+            
+            <form id="conquistadoresForm">
+                <input type="hidden" id="conquistadoresId">
+                
+                <div class="form-group">
+                    <label for="conquistadoresNombre">Nombre *</label>
+                    <input type="text" id="conquistadoresNombre" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="conquistadoresFoto">Foto</label>
+                    <input type="file" id="conquistadoresFoto" accept="image/*" onchange="previewImage(this, 'conquistadoresPreview')">
+                    <div id="conquistadoresPreview" style="margin-top: 1rem;"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="conquistadoresCargo">Cargo *</label>
+                    <input type="text" id="conquistadoresCargo" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="conquistadoresTelefono">Teléfono</label>
+                    <input type="tel" id="conquistadoresTelefono">
+                </div>
+                
+                <div class="form-group">
+                    <label for="conquistadoresClubDirige">Club que Dirige</label>
+                    <input type="text" id="conquistadoresClubDirige" placeholder="Ej: Club Central">
+                </div>
+                
+                <div class="form-group">
+                    <label for="conquistadoresNombreClub">Nombre del Club</label>
+                    <input type="text" id="conquistadoresNombreClub" placeholder="Ej: Conquistadores Central">
+                </div>
+                
+                <div class="form-group">
+                    <label for="conquistadoresLogoClub">Logo del Club</label>
+                    <input type="file" id="conquistadoresLogoClub" accept="image/*" onchange="previewImage(this, 'conquistadoresLogoPreview')">
+                    <div id="conquistadoresLogoPreview" style="margin-top: 1rem;"></div>
+                </div>
+                
+                <div id="conquistadoresAlert"></div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('conquistadoresModal')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 Club de Conquistadores. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/directores.js"></script>
+    <script>
+        // Configure for conquistadores
+        const TABLE_NAME = 'conquistadores';
+        const CONTAINER_ID = 'conquistadores-container';
+        const MODAL_ID = 'conquistadoresModal';
+        const FORM_ID = 'conquistadoresForm';
+        const ALERT_ID = 'conquistadoresAlert';
+    </script>
+</body>
+</html>

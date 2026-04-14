@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recursos - Club de Conquistadores</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>🏕️ Club de Conquistadores</h1>
+            </div>
+            <button class="nav-toggle" onclick="toggleMenu()">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="staff.html">Staff</a></li>
+                <li><a href="aventureros.html">Dir. Aventureros</a></li>
+                <li><a href="conquistadores.html">Dir. Conquistadores</a></li>
+                <li><a href="guias.html">Dir. Guías</a></li>
+                <li><a href="historia.html">Historia Den.</a></li>
+                <li><a href="recursos.html" class="active">Recursos</a></li>
+                <li><a href="login.html" id="loginLink">Login</a></li>
+                <li><a href="#" id="logoutLink" style="display:none;" onclick="logout()">Cerrar Sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <h1>Recursos</h1>
+            <div class="admin-only" style="display: none;">
+                <button class="btn btn-success" onclick="openCategoriaModal()" style="margin-right: 0.5rem;">
+                    + Nueva Categoría
+                </button>
+                <button class="btn btn-primary" onclick="openRecursoModal()">
+                    + Subir Archivo
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="container">
+        <!-- Categories Bar -->
+        <div id="categories-bar" class="categories-bar">
+            <button class="category-btn active" onclick="filterByCategory(null)">Todos</button>
+        </div>
+
+        <!-- Resources Grid -->
+        <div id="recursos-container" class="resources-grid">
+            <div class="loading">Cargando</div>
+        </div>
+    </div>
+
+    <!-- Categoria Modal -->
+    <div id="categoriaModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Nueva Categoría</h2>
+                <button class="modal-close" onclick="closeModal('categoriaModal')">×</button>
+            </div>
+            
+            <form id="categoriaForm">
+                <div class="form-group">
+                    <label for="categoriaNombre">Nombre de la Categoría *</label>
+                    <input type="text" id="categoriaNombre" required placeholder="Ej: Manuales">
+                </div>
+                
+                <div id="categoriaAlert"></div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Crear</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('categoriaModal')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Recurso Modal -->
+    <div id="recursoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Subir Archivo</h2>
+                <button class="modal-close" onclick="closeModal('recursoModal')">×</button>
+            </div>
+            
+            <form id="recursoForm">
+                <div class="form-group">
+                    <label for="recursoNombre">Nombre (opcional)</label>
+                    <input type="text" id="recursoNombre" placeholder="Nombre del archivo">
+                </div>
+                
+                <div class="form-group">
+                    <label for="recursoCategoria">Categoría *</label>
+                    <select id="recursoCategoria" required>
+                        <option value="">Seleccionar categoría</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="recursoArchivo">Archivo *</label>
+                    <input type="file" id="recursoArchivo" required>
+                </div>
+                
+                <div id="recursoAlert"></div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Subir</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('recursoModal')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 Club de Conquistadores. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/recursos.js"></script>
+</body>
+</html>
