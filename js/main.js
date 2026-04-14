@@ -22,16 +22,54 @@ function openModal(modalId) {
     }
 }
 
+// Resize image to maximum dimensions
+function resizeImage(file, maxWidth = 800, maxHeight = 800) {
+    return new Promise((resolve) => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        
+        img.onload = () => {
+            let { width, height } = img;
+            
+            // Calculate new dimensions maintaining aspect ratio
+            if (width > height) {
+                if (width > maxWidth) {
+                    height = (height * maxWidth) / width;
+                    width = maxWidth;
+                }
+            } else {
+                if (height > maxHeight) {
+                    width = (width * maxHeight) / height;
+                    height = maxHeight;
+                }
+            }
+            
+            canvas.width = width;
+            canvas.height = height;
+            
+            ctx.drawImage(img, 0, 0, width, height);
+            
+            canvas.toBlob(resolve, file.type, 0.8); // 80% quality
+        };
+        
+        img.src = URL.createObjectURL(file);
+    });
+}
+
 // Upload image to Supabase Storage
 async function uploadImage(file, bucket = 'fotos', folder = 'general') {
     try {
+        // Resize image before uploading
+        const resizedFile = await resizeImage(file);
+        
         const fileExt = file.name.split('.').pop();
         const fileName = `${Date.now()}.${fileExt}`;
         const filePath = `${folder}/${fileName}`;
 
         const { error: uploadError } = await supabase.storage
             .from(bucket)
-            .upload(filePath, file);
+            .upload(filePath, resizedFile);
 
         if (uploadError) throw uploadError;
 
@@ -56,7 +94,7 @@ function previewImage(input, previewId) {
     if (input.files && input.files[0]) {
         const reader = new FileReader();
         reader.onload = function(e) {
-            preview.innerHTML = `<img src="${e.target.result}" style="max-width: 150px; border-radius: 8px;">`;
+            preview.innerHTML = `<img src="${e.target.result}" style="max-width: 200px; max-height: 150px; object-fit: contain; border-radius: 8px; border: 1px solid #e5e7eb;">`;
         };
         reader.readAsDataURL(input.files[0]);
     }
