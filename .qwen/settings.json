@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(powershell *)"
+      "Bash(powershell *)",
+      "Bash(curl *)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
     ]
-  }
+  },
+  "$version": 3
 }
