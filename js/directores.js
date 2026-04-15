@@ -113,96 +113,107 @@ async function editRecord(tableName, id) {
 }
 
 // Handle form submission
-document.getElementById(FORM_ID).addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (!requireAdmin()) return;
-
-    console.log('[Directores] Form submitted');
-
-    const alertContainer = document.getElementById(ALERT_ID);
-    alertContainer.innerHTML = '';
-
-    const nombre = document.getElementById(`${TABLE_NAME}Nombre`).value;
-    const cargo = document.getElementById(`${TABLE_NAME}Cargo`).value;
-    const telefono = document.getElementById(`${TABLE_NAME}Telefono`).value;
-    const nombreClub = document.getElementById(`${TABLE_NAME}NombreClub`).value;
-    const fotoFile = document.getElementById(`${TABLE_NAME}Foto`).files[0];
-    const logoFile = document.getElementById(`${TABLE_NAME}LogoClub`).files[0];
-
-    console.log('[Directores] Form data:', { nombre, cargo, telefono, nombreClub });
-
-    let fotoUrl = null;
-    let logoUrl = null;
-
-    // Upload photo if provided
-    if (fotoFile) {
-        const uploadResult = await uploadImage(fotoFile, 'fotos', TABLE_NAME);
-        if (!uploadResult.success) {
-            showAlert(alertContainer, 'Error al subir la foto: ' + uploadResult.error, 'error');
-            return;
-        }
-        fotoUrl = uploadResult.url;
-        console.log('[Directores] Photo uploaded:', fotoUrl);
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById(FORM_ID);
+    
+    if (!form) {
+        console.error('[Directores] Form not found:', FORM_ID);
+        return;
     }
+    
+    console.log('[Directores] Attaching form submit handler for:', FORM_ID);
+    
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!requireAdmin()) return;
 
-    // Upload logo if provided
-    if (logoFile) {
-        const uploadResult = await uploadImage(logoFile, 'fotos', `${TABLE_NAME}/logos`);
-        if (!uploadResult.success) {
-            showAlert(alertContainer, 'Error al subir el logo: ' + uploadResult.error, 'error');
-            return;
+        console.log('[Directores] Form submitted');
+
+        const alertContainer = document.getElementById(ALERT_ID);
+        alertContainer.innerHTML = '';
+
+        const nombre = document.getElementById(`${TABLE_NAME}Nombre`).value;
+        const cargo = document.getElementById(`${TABLE_NAME}Cargo`).value;
+        const telefono = document.getElementById(`${TABLE_NAME}Telefono`).value;
+        const nombreClub = document.getElementById(`${TABLE_NAME}NombreClub`).value;
+        const fotoFile = document.getElementById(`${TABLE_NAME}Foto`).files[0];
+        const logoFile = document.getElementById(`${TABLE_NAME}LogoClub`).files[0];
+
+        console.log('[Directores] Form data:', { nombre, cargo, telefono, nombreClub });
+
+        let fotoUrl = null;
+        let logoUrl = null;
+
+        // Upload photo if provided
+        if (fotoFile) {
+            const uploadResult = await uploadImage(fotoFile, 'fotos', TABLE_NAME);
+            if (!uploadResult.success) {
+                showAlert(alertContainer, 'Error al subir la foto: ' + uploadResult.error, 'error');
+                return;
+            }
+            fotoUrl = uploadResult.url;
+            console.log('[Directores] Photo uploaded:', fotoUrl);
         }
-        logoUrl = uploadResult.url;
-        console.log('[Directores] Logo uploaded:', logoUrl);
-    }
 
-    // Show loading
-    const submitBtn = e.target.querySelector('button[type="submit"]');
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Guardando...';
+        // Upload logo if provided
+        if (logoFile) {
+            const uploadResult = await uploadImage(logoFile, 'fotos', `${TABLE_NAME}/logos`);
+            if (!uploadResult.success) {
+                showAlert(alertContainer, 'Error al subir el logo: ' + uploadResult.error, 'error');
+                return;
+            }
+            logoUrl = uploadResult.url;
+            console.log('[Directores] Logo uploaded:', logoUrl);
+        }
 
-    let error;
+        // Show loading
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Guardando...';
 
-    if (editingId) {
-        // Update existing record
-        const updateData = { nombre, cargo, telefono, nombre_club: nombreClub };
-        if (fotoUrl) updateData.foto = fotoUrl;
-        if (logoUrl) updateData.logo_club = logoUrl;
+        let error;
 
-        console.log('[Directores] Updating record:', updateData);
+        if (editingId) {
+            // Update existing record
+            const updateData = { nombre, cargo, telefono, nombre_club: nombreClub };
+            if (fotoUrl) updateData.foto = fotoUrl;
+            if (logoUrl) updateData.logo_club = logoUrl;
 
-        const result = await supabase
-            .from(TABLE_NAME)
-            .update(updateData)
-            .eq('id', editingId);
+            console.log('[Directores] Updating record:', updateData);
 
-        error = result.error;
-    } else {
-        // Create new record
-        const insertData = { nombre, cargo, telefono, nombre_club: nombreClub };
-        if (fotoUrl) insertData.foto = fotoUrl;
-        if (logoUrl) insertData.logo_club = logoUrl;
+            const result = await supabase
+                .from(TABLE_NAME)
+                .update(updateData)
+                .eq('id', editingId);
 
-        console.log('[Directores] Inserting record:', insertData);
+            error = result.error;
+        } else {
+            // Create new record
+            const insertData = { nombre, cargo, telefono, nombre_club: nombreClub };
+            if (fotoUrl) insertData.foto = fotoUrl;
+            if (logoUrl) insertData.logo_club = logoUrl;
 
-        const result = await supabase
-            .from(TABLE_NAME)
-            .insert(insertData);
+            console.log('[Directores] Inserting record:', insertData);
 
-        error = result.error;
-        
+            const result = await supabase
+                .from(TABLE_NAME)
+                .insert(insertData);
+
+            error = result.error;
+            
+            if (error) {
+                console.error('[Directores] Insert error:', error);
+            }
+        }
+
         if (error) {
-            console.error('[Directores] Insert error:', error);
+            showAlert(alertContainer, 'Error al guardar: ' + error.message, 'error');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Guardar';
+        } else {
+            console.log('[Directores] Record saved successfully');
+            closeModal(MODAL_ID);
+            await loadRecords();
         }
-    }
-
-    if (error) {
-        showAlert(alertContainer, 'Error al guardar: ' + error.message, 'error');
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Guardar';
-    } else {
-        console.log('[Directores] Record saved successfully');
-        closeModal(MODAL_ID);
-        await loadRecords();
-    }
+    });
 });
