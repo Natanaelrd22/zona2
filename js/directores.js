@@ -4,34 +4,49 @@
 let editingId = null;
 
 // Load records on page load
-document.addEventListener('DOMContentLoaded', () => {
-    loadRecords();
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log('[Directores] Loading records for table:', TABLE_NAME);
+    await loadRecords();
 });
 
 // Load all records
 async function loadRecords() {
     const container = document.getElementById(CONTAINER_ID);
+    
+    if (!container) {
+        console.error('[Directores] Container not found:', CONTAINER_ID);
+        return;
+    }
+    
     container.innerHTML = '<div class="loading">Cargando</div>';
 
-    const { data, error } = await supabase
-        .from(TABLE_NAME)
-        .select('*')
-        .order('created_at', { ascending: false });
+    try {
+        const { data, error } = await supabase
+            .from(TABLE_NAME)
+            .select('*')
+            .order('created_at', { ascending: false });
 
-    if (error) {
-        container.innerHTML = `<div class="alert alert-error">Error al cargar: ${error.message}</div>`;
-        return;
+        if (error) {
+            console.error('[Directores] Error loading records:', error);
+            container.innerHTML = `<div class="alert alert-error">Error al cargar: ${error.message}</div>`;
+            return;
+        }
+
+        console.log('[Directores] Records loaded:', data);
+
+        if (!data || data.length === 0) {
+            showEmpty(container, 'No hay registros todavía.');
+            return;
+        }
+
+        container.innerHTML = '';
+        data.forEach(item => {
+            container.innerHTML += renderCard(item, TABLE_NAME);
+        });
+    } catch (err) {
+        console.error('[Directores] Unexpected error:', err);
+        container.innerHTML = `<div class="alert alert-error">Error inesperado: ${err.message}</div>`;
     }
-
-    if (!data || data.length === 0) {
-        showEmpty(container, 'No hay registros todavía.');
-        return;
-    }
-
-    container.innerHTML = '';
-    data.forEach(item => {
-        container.innerHTML += renderCard(item, TABLE_NAME);
-    });
 }
 
 // Open modal to create new record
@@ -102,6 +117,8 @@ document.getElementById(FORM_ID).addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!requireAdmin()) return;
 
+    console.log('[Directores] Form submitted');
+
     const alertContainer = document.getElementById(ALERT_ID);
     alertContainer.innerHTML = '';
 
@@ -111,6 +128,8 @@ document.getElementById(FORM_ID).addEventListener('submit', async (e) => {
     const nombreClub = document.getElementById(`${TABLE_NAME}NombreClub`).value;
     const fotoFile = document.getElementById(`${TABLE_NAME}Foto`).files[0];
     const logoFile = document.getElementById(`${TABLE_NAME}LogoClub`).files[0];
+
+    console.log('[Directores] Form data:', { nombre, cargo, telefono, nombreClub });
 
     let fotoUrl = null;
     let logoUrl = null;
@@ -123,6 +142,7 @@ document.getElementById(FORM_ID).addEventListener('submit', async (e) => {
             return;
         }
         fotoUrl = uploadResult.url;
+        console.log('[Directores] Photo uploaded:', fotoUrl);
     }
 
     // Upload logo if provided
@@ -133,6 +153,7 @@ document.getElementById(FORM_ID).addEventListener('submit', async (e) => {
             return;
         }
         logoUrl = uploadResult.url;
+        console.log('[Directores] Logo uploaded:', logoUrl);
     }
 
     // Show loading
@@ -148,6 +169,8 @@ document.getElementById(FORM_ID).addEventListener('submit', async (e) => {
         if (fotoUrl) updateData.foto = fotoUrl;
         if (logoUrl) updateData.logo_club = logoUrl;
 
+        console.log('[Directores] Updating record:', updateData);
+
         const result = await supabase
             .from(TABLE_NAME)
             .update(updateData)
@@ -159,12 +182,18 @@ document.getElementById(FORM_ID).addEventListener('submit', async (e) => {
         const insertData = { nombre, cargo, telefono, nombre_club: nombreClub };
         if (fotoUrl) insertData.foto = fotoUrl;
         if (logoUrl) insertData.logo_club = logoUrl;
-        
+
+        console.log('[Directores] Inserting record:', insertData);
+
         const result = await supabase
             .from(TABLE_NAME)
             .insert(insertData);
-        
+
         error = result.error;
+        
+        if (error) {
+            console.error('[Directores] Insert error:', error);
+        }
     }
 
     if (error) {
@@ -172,7 +201,8 @@ document.getElementById(FORM_ID).addEventListener('submit', async (e) => {
         submitBtn.disabled = false;
         submitBtn.textContent = 'Guardar';
     } else {
+        console.log('[Directores] Record saved successfully');
         closeModal(MODAL_ID);
-        loadRecords();
+        await loadRecords();
     }
 });
