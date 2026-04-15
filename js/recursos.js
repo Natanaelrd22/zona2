@@ -22,34 +22,7 @@ async function loadCategorias() {
     }
 
     categorias = data || [];
-    renderCategories();
     populateCategoriaSelect();
-}
-
-// Render categories bar
-function renderCategories() {
-    const bar = document.getElementById('categories-bar');
-    
-    let html = '<button class="category-btn active" onclick="filterByCategory(null)">Todos</button>';
-    
-    categorias.forEach(cat => {
-        html += `
-            <div style="position: relative; display: inline-block;">
-                <button class="category-btn ${selectedCategory === cat.id ? 'active' : ''}" 
-                        onclick="filterByCategory('${cat.id}')">
-                    ${cat.nombre}
-                </button>
-                ${isAdmin ? `<button onclick="deleteCategoria('${cat.id}')" 
-                    style="position: absolute; top: -8px; right: -8px; background: #dc2626; color: white; 
-                    border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; 
-                    cursor: pointer; display: none;" class="admin-only">
-                    ×
-                </button>` : ''}
-            </div>
-        `;
-    });
-    
-    bar.innerHTML = html;
 }
 
 // Populate categoria select in modal
@@ -64,13 +37,6 @@ function populateCategoriaSelect() {
     select.innerHTML = html;
 }
 
-// Filter by category
-function filterByCategory(categoryId) {
-    selectedCategory = categoryId;
-    renderCategories();
-    loadRecursos();
-}
-
 // Load all recursos
 async function loadRecursos() {
     const container = document.getElementById('recursos-container');
@@ -81,10 +47,6 @@ async function loadRecursos() {
         .select('*')
         .order('created_at', { ascending: false });
 
-    if (selectedCategory) {
-        query = query.eq('categoria_id', selectedCategory);
-    }
-
     const { data, error } = await query;
 
     if (error) {
@@ -93,31 +55,87 @@ async function loadRecursos() {
     }
 
     if (!data || data.length === 0) {
-        showEmpty(container, selectedCategory ? 'No hay archivos en esta categoría.' : 'No hay recursos todavía.');
+        showEmpty(container, 'No hay recursos todavía.');
         return;
     }
 
-    container.innerHTML = '';
+    // Group resources by category
+    const groupedByCategory = {};
     data.forEach(recurso => {
-        const categoria = categorias.find(c => c.id === recurso.categoria_id);
+        const catId = recurso.categoria_id || 'uncategorized';
+        if (!groupedByCategory[catId]) {
+            groupedByCategory[catId] = [];
+        }
+        groupedByCategory[catId].push(recurso);
+    });
+
+    // Build HTML
+    let html = '';
+    
+    // Render each category
+    categorias.forEach(cat => {
+        const resources = groupedByCategory[cat.id];
+        if (resources && resources.length > 0) {
+            html += `
+                <div class="category-section">
+                    <h2 class="category-title">${cat.nombre}</h2>
+                    <ul class="resource-list">
+            `;
+            
+            resources.forEach(recurso => {
+                html += `
+                    <li class="resource-item">
+                        <a href="${recurso.archivo_url}" download class="resource-link">
+                            <span class="resource-icon">📄</span>
+                            <span class="resource-name">${recurso.nombre}</span>
+                        </a>
+                        <button onclick="deleteRecurso('${recurso.id}')"
+                                class="btn btn-danger btn-sm admin-only"
+                                style="display: ${isAdmin ? 'inline-block' : 'none'}">
+                            Eliminar
+                        </button>
+                    </li>
+                `;
+            });
+            
+            html += `
+                    </ul>
+                </div>
+            `;
+        }
+    });
+
+    // Render uncategorized resources
+    if (groupedByCategory['uncategorized'] && groupedByCategory['uncategorized'].length > 0) {
+        html += `
+            <div class="category-section">
+                <h2 class="category-title">Sin Categoría</h2>
+                <ul class="resource-list">
+        `;
         
-        container.innerHTML += `
-            <div class="resource-card">
-                <h3>${recurso.nombre}</h3>
-                ${categoria ? `<span class="category-tag">${categoria.nombre}</span>` : ''}
-                <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
-                    <a href="${recurso.archivo_url}" download class="btn btn-success" style="flex: 1; text-align: center;">
-                        Descargar
+        groupedByCategory['uncategorized'].forEach(recurso => {
+            html += `
+                <li class="resource-item">
+                    <a href="${recurso.archivo_url}" download class="resource-link">
+                        <span class="resource-icon">📄</span>
+                        <span class="resource-name">${recurso.nombre}</span>
                     </a>
-                    <button onclick="deleteRecurso('${recurso.id}')" 
-                            class="btn btn-danger admin-only" 
+                    <button onclick="deleteRecurso('${recurso.id}')"
+                            class="btn btn-danger btn-sm admin-only"
                             style="display: ${isAdmin ? 'inline-block' : 'none'}">
                         Eliminar
                     </button>
-                </div>
+                </li>
+            `;
+        });
+        
+        html += `
+                </ul>
             </div>
         `;
-    });
+    }
+
+    container.innerHTML = html;
 }
 
 // Open categoria modal
