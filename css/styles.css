@@ -338,12 +338,15 @@ body {
     padding: 2rem 0;
     margin-bottom: 2rem;
     box-shadow: var(--shadow);
+    text-align: center;
 }
 
 .page-header .container {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    gap: 1rem;
 }
 
 .page-header h1 {
