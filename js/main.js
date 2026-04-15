@@ -102,11 +102,11 @@ function previewImage(input, previewId) {
 
 // Render card for staff/directors
 function renderCard(item, tableName) {
-    const imageHtml = item.foto 
+    const imageHtml = item.foto
         ? `<img src="${item.foto}" alt="${item.nombre}">`
         : `<div class="placeholder">👤</div>`;
 
-    const logoHtml = item.logo_club 
+    const logoHtml = item.logo_club
         ? `<div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem; background: #f3f4f6; padding: 0.5rem; border-radius: 4px;">
             <img src="${item.logo_club}" alt="Logo" style="width: 32px; height: 32px; object-fit: contain;">
             <span style="font-size: 0.75rem; color: #6b7280;">${item.nombre_club || 'Club'}</span>
@@ -117,10 +117,9 @@ function renderCard(item, tableName) {
         <div class="card" data-id="${item.id}">
             <div class="card-image">${imageHtml}</div>
             <div class="card-content">
-                <h3>${item.nombre}</h3>
-                <p><strong>Cargo:</strong> ${item.cargo}</p>
+                <h3>${item.nombre || 'Sin nombre'}</h3>
+                <p><strong>Cargo:</strong> ${item.cargo || 'N/A'}</p>
                 ${item.telefono ? `<p><strong>Teléfono:</strong> ${item.telefono}</p>` : ''}
-                ${item.club_dirige ? `<p><strong>Club que Dirige:</strong> ${item.club_dirige}</p>` : ''}
                 ${logoHtml}
                 <div class="card-actions admin-only" style="display: ${isAdmin ? 'flex' : 'none'}">
                     <button class="btn btn-primary" onclick="editRecord('${tableName}', '${item.id}')">Editar</button>

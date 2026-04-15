@@ -83,9 +83,8 @@ async function editRecord(tableName, id) {
     document.getElementById(`${tableName}Nombre`).value = data.nombre;
     document.getElementById(`${tableName}Cargo`).value = data.cargo;
     document.getElementById(`${tableName}Telefono`).value = data.telefono || '';
-    document.getElementById(`${tableName}ClubDirige`).value = data.club_dirige || '';
     document.getElementById(`${tableName}NombreClub`).value = data.nombre_club || '';
-    
+
     if (data.foto) {
         document.getElementById(`${tableName}Preview`).innerHTML = `<img src="${data.foto}" style="max-width: 150px; border-radius: 8px;">`;
     }
@@ -109,7 +108,6 @@ document.getElementById(FORM_ID).addEventListener('submit', async (e) => {
     const nombre = document.getElementById(`${TABLE_NAME}Nombre`).value;
     const cargo = document.getElementById(`${TABLE_NAME}Cargo`).value;
     const telefono = document.getElementById(`${TABLE_NAME}Telefono`).value;
-    const clubDirige = document.getElementById(`${TABLE_NAME}ClubDirige`).value;
     const nombreClub = document.getElementById(`${TABLE_NAME}NombreClub`).value;
     const fotoFile = document.getElementById(`${TABLE_NAME}Foto`).files[0];
     const logoFile = document.getElementById(`${TABLE_NAME}LogoClub`).files[0];
@@ -146,19 +144,19 @@ document.getElementById(FORM_ID).addEventListener('submit', async (e) => {
 
     if (editingId) {
         // Update existing record
-        const updateData = { nombre, cargo, telefono, club_dirige: clubDirige, nombre_club: nombreClub };
+        const updateData = { nombre, cargo, telefono, nombre_club: nombreClub };
         if (fotoUrl) updateData.foto = fotoUrl;
         if (logoUrl) updateData.logo_club = logoUrl;
-        
+
         const result = await supabase
             .from(TABLE_NAME)
             .update(updateData)
             .eq('id', editingId);
-        
+
         error = result.error;
     } else {
         // Create new record
-        const insertData = { nombre, cargo, telefono, club_dirige: clubDirige, nombre_club: nombreClub };
+        const insertData = { nombre, cargo, telefono, nombre_club: nombreClub };
         if (fotoUrl) insertData.foto = fotoUrl;
         if (logoUrl) insertData.logo_club = logoUrl;
         
