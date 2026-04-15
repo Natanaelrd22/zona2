@@ -70,16 +70,19 @@ function updateAuthUI(session) {
     if (session) {
         currentUser = session.user;
         isAdmin = session.user.email === 'ministrylion@gmail.com';
-        
+
         if (loginLink) loginLink.style.display = 'none';
         if (logoutLink) logoutLink.style.display = 'block';
     } else {
         currentUser = null;
         isAdmin = false;
-        
+
         if (loginLink) loginLink.style.display = 'block';
         if (logoutLink) logoutLink.style.display = 'none';
     }
+
+    // Show/hide admin-only elements
+    showAdminOnly();
 }
 
 // Check if user is admin
@@ -95,7 +98,13 @@ function requireAdmin() {
 function showAdminOnly() {
     const adminElements = document.querySelectorAll('.admin-only');
     adminElements.forEach(el => {
-        el.style.display = isAdmin ? 'block' : 'none';
+        if (isAdmin) {
+            // Restore original display style based on element type
+            const originalDisplay = el.tagName === 'BUTTON' || el.tagName === 'SPAN' || el.tagName === 'A' ? 'inline-block' : 'block';
+            el.style.display = originalDisplay;
+        } else {
+            el.style.display = 'none';
+        }
     });
 }
 
