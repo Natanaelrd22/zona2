@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📜 El Conflicto de los Siglos 📜</title>
+    <style>
+        :root{--primary:#d4af37;--bg:#1a1a24;--card:#252535;--text:#f0f0f5;--success:#4caf50;--danger:#f44336;--accent:#7b68ee}
+        *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+        body{background:var(--bg);color:var(--text);display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px;background-image:radial-gradient(circle at 50% 50%,#2a2a3d 0%,#111118 100%)}
+        .container{background:var(--card);border-radius:16px;padding:2rem;max-width:650px;width:100%;box-shadow:0 10px 30px rgba(0,0,0,0.6);text-align:center;border:2px solid var(--primary);position:relative;overflow:hidden}
+        h1{color:var(--primary);margin-bottom:1rem;font-size:1.8rem;text-shadow:0 2px 5px rgba(0,0,0,0.5)}
+        p{margin-bottom:1rem;line-height:1.6;font-size:1rem}
+        .btn{background:var(--primary);color:#111;border:none;padding:12px 24px;font-size:1rem;font-weight:bold;border-radius:8px;cursor:pointer;margin:8px;transition:all 0.2s;box-shadow:0 4px 8px rgba(0,0,0,0.3)}
+        .btn:hover{transform:translateY(-2px);box-shadow:0 6px 12px rgba(212,175,55,0.4)}
+        .btn-secondary{background:var(--accent);color:white}
+        .btn-danger{background:var(--danger);color:white}
+        .hud{display:flex;justify-content:space-between;background:#15151f;padding:10px 15px;border-radius:8px;margin-bottom:1.5rem;font-weight:bold;border:1px solid #333;flex-wrap:wrap;gap:5px}
+        .option-btn{display:block;width:100%;padding:12px;margin:10px 0;background:#2d2d42;color:var(--text);border:1px solid #444;border-radius:8px;cursor:pointer;font-size:0.95rem;transition:0.2s;text-align:left}
+        .option-btn:hover{background:#3a3a54;border-color:var(--primary)}
+        .hidden{display:none}
+        .screen{animation:fadeIn 0.4s ease}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+        .badge{font-size:0.8rem;background:#333;padding:4px 8px;border-radius:12px;margin:2px;display:inline-block}
+        .correct{background:var(--success)!important;color:white;border-color:var(--success)}
+        .wrong{background:var(--danger)!important;color:white;border-color:var(--danger)}
+        .hint-box{background:#1e1e2a;border:1px dashed var(--primary);padding:10px;margin-top:10px;border-radius:8px;font-style:italic;font-size:0.9rem}
+        footer{margin-top:2rem;font-size:0.75rem;color:#888}
+        #progress{font-size:0.9rem;color:#aaa}
+        .level-badge{background:var(--accent);padding:3px 10px;border-radius:15px;font-size:0.85rem}
+        hr{border:1px solid #444;margin:15px 0}
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- PANTALLA DE INICIO -->
+    <div id="screen-start" class="screen">
+        <h1>📜 EL CONFLICTO DE LOS SIGLOS 📜</h1>
+        <p>¡Hola, explorador de las profecías! ✨<br>
+        Embárcate en una aventura fascinante por los siglos de la fe cristiana.<br>
+        Descubre cómo los valientes mantuvieron viva la verdad, desde los primeros mártires hasta el despertar adventista.<br>
+        <strong>45 preguntas</strong> te esperan en 5 niveles históricos.<br>
+        ¿Estás listo para viajar en el tiempo? 🚀</p>
+        <button class="btn" onclick="startGame()">🎮 ¡COMENZAR AVENTURA!</button>
+        <br>
+        <button class="btn btn-danger" onclick="window.location.href='../index.html'" style="margin-top: 1rem;">🏠 Volver al Inicio</button>
+    </div>
+
+    <!-- PANTALLA DE JUEGO -->
+    <div id="screen-game" class="screen hidden">
+        <div class="hud">
+            <span>⭐ Puntos: <span id="score">0</span></span>
+            <span>❤️ Vidas: <span id="lives">3</span></span>
+            <span class="level-badge">Nivel <span id="level-num">1</span>/5</span>
+        </div>
+        <h3 id="level-title">NIVEL 1: ...</h3>
+        <p id="progress">Pregunta 1 de 9</p>
+        <div id="question-container">
+            <p id="question-text" style="font-size:1.1rem;margin:1rem 0;min-height:60px"></p>
+            <div id="options"></div>
+            <div id="hint-container" class="hint-box hidden"></div>
+        </div>
+        <div style="margin-top:1.5rem">
+            <button class="btn btn-secondary" id="hint-btn" onclick="useHint()">💡 Pista (-50 pts)</button>
+            <button class="btn btn-danger" onclick="window.location.href='../index.html'">🏠 Volver al Inicio</button>
+        </div>
+    </div>
+
+    <!-- PANTALLA NIVEL COMPLETADO -->
+    <div id="screen-level-complete" class="screen hidden">
+        <h1>🎉 ¡NIVEL COMPLETADO! 🎉</h1>
+        <p>¡Excelente trabajo! Has superado esta etapa histórica.</p>
+        <p>Puntos actuales: <span id="current-score">0</span></p>
+        <button class="btn" onclick="nextLevel()">➡️ ¡Siguiente nivel!</button>
+        <br>
+        <button class="btn btn-danger" onclick="window.location.href='../index.html'" style="margin-top: 1rem;">🏠 Volver al Inicio</button>
+    </div>
+
+    <!-- PANTALLA VICTORIA -->
+    <div id="screen-win" class="screen hidden">
+        <h1>🏆 ¡VICTORIA! 🏆</h1>
+        <p>¡Felicidades, maestro de las profecías!<br>
+        Has completado todo el viaje por los siglos de la fe.</p>
+        <p>Puntuación Final: <span id="final-score">0</span></p>
+        <button class="btn" onclick="startGame()">🔄 Jugar de Nuevo</button>
+        <br>
+        <button class="btn btn-danger" onclick="window.location.href='../index.html'">🏠 Volver al Inicio</button>
+    </div>
+
+    <!-- PANTALLA GAME OVER -->
+    <div id="screen-lose" class="screen hidden">
+        <h1>😢 ¡Juego Terminado! 😢</h1>
+        <p>Se acabaron tus vidas. ¡Pero no te rindas!<br>
+        La historia está llena de segundas oportunidades.</p>
+        <p>Puntuación: <span id="lose-score">0</span></p>
+        <button class="btn" onclick="resetGame()">🔄 Intentar de Nuevo</button>
+        <br>
+        <button class="btn btn-danger" onclick="window.location.href='../index.html'">🏠 Volver al Inicio</button>
+    </div>
+        <h1>🏆 ¡FELICIDADES! 🏆</h1>
+        <p>¡Has completado todos los niveles!</p>
+        <hr>
+        <p><strong>Puntos totales:</strong> <span id="final-score">0</span></p>
+        <p>¡Eres un verdadero explorador de las profecías! ✨</p>
+        <div id="badges" style="margin:15px 0">
+            <span class="badge">🕊️ Mártires Primitivos</span>
+            <span class="badge">🕯️ Valdenses</span>
+            <span class="badge">🔥 Reformadores</span>
+            <span class="badge">⚔️ Protestantes</span>
+            <span class="badge">🌟 Señales del Fin</span>
+            <span class="badge">🌱 Despertar Adventista</span>
+        </div>
+        <p style="font-size:0.9rem">✅ Todas las insignias desbloqueadas</p>
+        <button class="btn" onclick="resetGame()">🔄 ¡Jugar de nuevo!</button>
+        <button class="btn btn-danger" onclick="window.location.href='index.html'">🏠 Volver al Inicio</button>
+    </div>
+
+    <!-- PANTALLA DERROTA -->
+    <div id="screen-lose" class="screen hidden">
+        <h1>😢 ¡OH NO! 😢</h1>
+        <p>Has perdido todas tus vidas.</p>
+        <hr>
+        <p><strong>Puntos finales:</strong> <span id="lose-score">0</span></p>
+        <p>¡No te rindas! La historia merece ser recordada. 💪</p>
+        <button class="btn" onclick="resetGame()">🔄 ¡Intentar de nuevo!</button>
+        <button class="btn btn-danger" onclick="window.location.href='index.html'">🏠 Volver al Inicio</button>
+    </div>
+
+    <footer>📖 Basado en "El Conflicto de los Siglos" | 45 preguntas educativas</footer>
+</div>
+
+<script>
+const levels=[
+{title:"NIVEL 1: Primeros Cristianos (P.1-P.8)",questions:[
+{t:"¿Qué dijeron los ángeles cuando Cristo ascendió al cielo?",o:["Irán a Roma","Este Jesús volverá así como le visteis ir","Esperen 40 días","Prediquen en Grecia"],c:1,h:"Se refiere al regreso visible de Jesús."},
+{t:"¿Quién descendió sobre los discípulos para darles poder?",o:["Moisés","El Espíritu Santo","El arcángel Miguel","Juan el Bautista"],c:1,h:"Fue prometido por Jesús antes de ascender."},
+{t:"¿Cuántas personas fueron bautizadas tras el sermón de Pedro en Pentecostés?",o:["1,000","3,000","5,000","12,000"],c:1,h:"Tres mil almas en un solo día (Hechos 2)."},
+{t:"¿Qué emperador se burlaba al ver cristianos despedazados por caballos?",o:["Constantino","Nerón","Marco Aurelio","Tiberio"],c:2,h:"Su nombre combina título imperial con filósofo estoico."},
+{t:"¿Dónde se escondían los cristianos para escapar de la persecución?",o:["Templos","Cuevas y refugios","Barcos","Desiertos"],c:1,h:"Lugares subterráneos y apartados."},
+{t:"¿A qué ciudad iba Saulo de Tarso cuando Jesús se le apareció?",o:["Jerusalén","Roma","Damasco","Antioquía"],c:2,h:"Ciudad de Siria donde perseguía cristianos."},
+{t:"¿Qué nombre recibió Saulo después de su conversión?",o:["Pedro","Pablo","Juan","Bernabé"],c:1,h:"El gran misionero de los gentiles."},
+{t:"¿Qué joven misionero de 16 años evangelizó Irlanda?",o:["Columba","Patrick","Agustín","Beda"],c:1,h:"Hoy se celebra un día festivo con su nombre."},
+{t:"¿Quién estableció un centro misionero en Escocia?",o:["Patrick","Pablo","Columba","Wicleff"],c:2,h:"Monje irlandés que llevó el evangelio al norte."}]},
+{title:"NIVEL 2: Roma y la Edad Oscura (P.9-P.13)",questions:[
+{t:"¿Qué religión decayó en Roma mientras el cristianismo crecía?",o:["Judaísmo","Religión pagana","Budismo","Islam"],c:1,h:"Adoración a múltiples dioses romanos."},
+{t:"¿A quiénes animaba la iglesia de Roma a unirse, pidiéndoles traer sus creencias?",o:["Judíos","Paganos","Musulmanes","Filósofos"],c:1,h:"Adoradores de dioses falsos."},
+{t:"¿Qué fecha del nacimiento del dios sol se convirtió en Navidad?",o:["21 de marzo","25 de diciembre","1 de enero","6 de enero"],c:1,h:"Fecha del solsticio de invierno romano."},
+{t:"¿En qué año el papa se convirtió en el rey más poderoso de Europa?",o:["313 d.C.","476 d.C.","538 d.C.","800 d.C."],c:2,h:"Siglo VI, después de la caída de Roma."},
+{t:"¿Qué institución combinó iglesia y estado con poder militar?",o:["El imperio","El papado","El concilio","La inquisición"],c:1,h:"Gobierno religioso con autoridad política."},
+{t:"¿Qué grupo guardó la fe en Jesús a toda costa durante la Edad Oscura?",o:["Jesuitas","Valdenses","Cruzados","Fariseos"],c:1,h:"Nombre viene de un valle en los Alpes."},
+{t:"¿Por qué se llamó 'Edad Oscura' a ese período?",o:["No había electricidad","Se quitó la Biblia al pueblo","Era de noche","Había guerras"],c:1,h:"La lámpara que alumbra fue ocultada."},
+{t:"¿Dónde se refugiaban los Valdenses para escapar de la persecución?",o:["Ciudades","Cuevas y montañas","Barcos","Desiertos"],c:1,h:"Lugares altos y escondidos."},
+{t:"¿Qué mantenían encendido los Valdenses durante siglos?",o:["Fuego sagrado","Las llamas de la verdad","Lámparas eternas","Antorchas"],c:1,h:"La Palabra de Dios y la fe verdadera."}]},
+{title:"NIVEL 3: Reformadores (P.14-P.20)",questions:[
+{t:"¿De qué país era el reformador Juan Huss?",o:["Alemania","Bohemia","Inglaterra","Suiza"],c:1,h:"Región que hoy es parte de República Checa."},
+{t:"¿Qué acusación llevaron contra Juan Huss en el tribunal?",o:["Robo","Enseñar herejías","Traición","Blasfemia"],c:1,h:"Enseñanzas contrarias a la iglesia establecida."},
+{t:"¿Qué oración repetía Juan Huss mientras ardía en la hoguera?",o:["Padre Nuestro","Jesús hijo de David ten misericordia de mí","Ave María","Credo"],c:1,h:"Invocación al Mesías como hijo de David."},
+{t:"¿En qué fecha murió Juan Huss quemado en la hoguera?",o:["6 julio 1415","31 oct 1517","25 dic 1530","13 nov 1833"],c:0,h:"Principios del siglo XV."},
+{t:"¿En qué siglo se observaba el sábado en Noruega, España y Rusia?",o:["XIII","XIV","XV","XVI"],c:2,h:"Siglo 15, antes de la Reforma."},
+{t:"¿Qué les pasó a monjes observadores del sábado en Moscú?",o:["Los exiliaron","Los condenaron a morir en jaulas","Los perdonaron","Los hicieron obispos"],c:1,h:"Jaulas colocadas en el parque principal."},
+{t:"¿Qué reformador inglés tradujo la Biblia al inglés?",o:["Martín Lutero","Juan Wicleff","Juan Calvino","Juan Knox"],c:1,h:"Llamado 'la estrella matutina de la reforma'."},
+{t:"¿Qué versículo cambió la vida de Martín Lutero?",o:["Dios es amor","El justo vivirá por la fe","Yo soy el camino","Amad a vuestros enemigos"],c:1,h:"Romanos 1:17, sobre justificación."},
+{t:"¿Cuándo clavó Lutero las 95 tesis en Wittenberg?",o:["6 julio 1415","31 oct 1517","25 dic 1530","13 nov 1833"],c:1,h:"Fecha que hoy celebran los protestantes."}]},
+{title:"NIVEL 4: Protestantes y Mártires (P.21-P.26)",questions:[
+{t:"¿Por qué protestaban los seguidores de Lutero contra Roma?",o:["Por impuestos","Por no dejar tener la Biblia y hablar solo de ley","Por la comida","Por el idioma"],c:1,h:"Querían la Palabra y el mensaje de gracia."},
+{t:"¿Qué nombre recibieron los que protestaban contra Roma?",o:["Católicos","Protestantes","Ortodoxos","Evangélicos"],c:1,h:"De 'protestar' contra las doctrinas romanas."},
+{t:"¿Quién fue líder de la reforma en Suiza junto a Lutero?",o:["Calvino","Zwinglio","Knox","Wesley"],c:1,h:"Reformador de Zúrich."},
+{t:"¿Quién lideró la reforma en Ginebra?",o:["Lutero","Zwinglio","Juan Calvino","Juan Huss"],c:2,h:"Teólogo francés que estableció un gobierno teocrático."},
+{t:"¿Qué ciudad se convirtió en centro del movimiento protestante?",o:["Roma","París","Suiza","Londres"],c:2,h:"País de los Alpes con ciudades como Ginebra."},
+{t:"¿Qué gritó Latimer mientras ardía junto a Ridley?",o:["¡La verdad vencerá!","¡Sé valiente, hoy encenderemos una luz en Inglaterra!","¡No temáis!","¡Cristo reina!"],c:1,h:"Profecía sobre una luz que jamás se apagaría."},
+{t:"¿Qué orden se dio en Inglaterra pocos años después?",o:["Quemar todas las Biblias","Una Biblia en cada casa","Prohibir la predicación","Cerrar iglesias"],c:1,h:"Acceso a las Escrituras para todo el pueblo."},
+{t:"¿De qué profecías predicaba Juan Knox en el norte de Inglaterra?",o:["Isaías","Daniel y Apocalipsis","Salmos","Éxodo"],c:1,h:"Libros proféticos sobre el fin de los tiempos."},
+{t:"¿Qué les pasó a 'las dos margaritas' en Wingtown?",o:["Las exiliaron","Las condenaron a morir ahogadas","Las perdonaron","Las hicieron líderes"],c:1,h:"Mártires llevadas al mar con marea baja."}]},
+{title:"NIVEL 5: Señales y Despertar (P.27-P.34)",questions:[
+{t:"¿En qué siglo hubo un gran movimiento de reforma en toda Europa?",o:["XV","XVI","XVII","XVIII"],c:2,h:"Siglo 17, después de Lutero."},
+{t:"¿Quién fue el gran predicador inglés que predicaba al aire libre a multitudes?",o:["Lutero","Calvino","Juan Wesley","Knox"],c:2,h:"Fundador del metodismo."},
+{t:"¿En qué año los soldados franceses tomaron preso al papa Pío VI?",o:["1755","1780","1798","1833"],c:2,h:"Fin del período profético de 1260 años."},
+{t:"¿Cuántos años duró el período profético de persecución que terminó en 1798?",o:["1000","1260","2300","70"],c:1,h:"Profecía de Daniel y Apocalipsis."},
+{t:"¿En qué año ocurrió el gran terremoto de Lisboa?",o:["1755","1780","1833","1798"],c:0,h:"Primera gran señal del tiempo del fin."},
+{t:"¿Cuándo se oscureció el sol como señal profética?",o:["Mayo 1755","Mayo 1780","Nov 1833","Dic 1798"],c:1,h:"Conocido como 'El Día Oscuro'."},
+{t:"¿Qué le pasó a la luna la noche que el sol se oscureció en 1780?",o:["Se volvió blanca","Se volvió roja como sangre","Desapareció","Se partió"],c:1,h:"Color carmesí intenso registrado históricamente."},
+{t:"¿Cuándo cayeron las estrellas del cielo como última gran señal?",o:["13 nov 1755","13 nov 1780","13 nov 1833","13 nov 1844"],c:2,h:"Lluvia de meteoros Leonidas."},
+{t:"¿Qué mensaje deben predicar los conquistadores en esta generación?",o:["La ley","El mensaje del advenimiento","La historia","La ciencia"],c:1,h:"La pronta venida de Jesús a todo el mundo."},
+{t:"¿A quiénes usó Dios para predicar en Suecia cuando encarcelaron a los adultos?",o:["Ángeles","Niños y niñas","Animales","Extranjeros"],c:1,h:"Los pequeños llevando el mensaje."},
+{t:"¿Qué campesino estadounidense estudió las profecías de Daniel y se convenció de la pronta venida de Cristo?",o:["Elena White","Josías Litch","Guillermo Miller","Carlos Fitch"],c:2,h:"Agricultor que inició el movimiento millerita."},
+{t:"¿Con quién comienza la historia de los Adventistas del Séptimo Día según el texto?",o:["Lutero","Calvino","Guillermo Miller","Juan Wesley"],c:2,h:"El predicador estadounidense del gran despertar."},
+{t:"¿Qué texto repetía la joven mártir mientras el agua subía sobre su cabeza?",o:["Padre Nuestro","Con Cristo estoy juntamente crucificada y ya no vivo yo","Ave María","Credo de los Apóstoles"],c:1,h:"Gálatas 2:20, sobre vivir en Cristo."},
+{t:"¿Qué edad tenía la mayor de 'las dos margaritas' cuando fue martirizada?",o:["40 años","50 años","60 años","70 años"],c:2,h:"Una viuda de edad avanzada."},
+{t:"¿Qué intentaron hacer los sacerdotes con la joven mártir antes de que subiera la marea?",o:["Salvarla","Persuadirla a renunciar a sus creencias","Bautizarla","Escapar con ella"],c:1,h:"Querían que abandonara su fe."}]}];
+
+let cl=0,cq=0,sc=0,lv=3,hU=false,gA=false;
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById(id).classList.remove('hidden')}
+function startGame(){cl=0;cq=0;sc=0;lv=3;gA=true;updateHUD();loadQ();showScreen('screen-game')}
+function resetGame(){startGame()}
+function updateHUD(){document.getElementById('score').textContent=sc;document.getElementById('lives').textContent=lv;document.getElementById('level-num').textContent=cl+1}
+function loadQ(){hU=false;document.getElementById('hint-container').classList.add('hidden');document.getElementById('hint-btn').disabled=false;const L=levels[cl];document.getElementById('level-title').textContent=L.title;document.getElementById('progress').textContent=`Pregunta ${cq+1} de ${L.questions.length}`;const q=L.questions[cq];document.getElementById('question-text').textContent=q.t;const O=document.getElementById('options');O.innerHTML='';q.o.forEach((opt,i)=>{const b=document.createElement('button');b.className='option-btn';b.textContent=opt;b.onclick=()=>checkA(i,b);O.appendChild(b)})}
+function useHint(){if(hU||!gA)return;sc=Math.max(0,sc-50);updateHUD();hU=true;document.getElementById('hint-btn').disabled=true;const h=levels[cl].questions[cq].h;const bx=document.getElementById('hint-container');bx.textContent="💡 Pista: "+h;bx.classList.remove('hidden')}
+function checkA(sel,btn){if(!gA)return;const q=levels[cl].questions[cq];const opts=document.querySelectorAll('.option-btn');opts.forEach(b=>b.disabled=true);if(sel===q.c){btn.classList.add('correct');sc+=100;updateHUD();setTimeout(()=>{cq++;if(cq>=levels[cl].questions.length)showLC();else loadQ()},1000)}else{btn.classList.add('wrong');opts[q.c].classList.add('correct');lv--;updateHUD();if(lv<=0)setTimeout(()=>gameOver(),1200);else setTimeout(()=>{cq++;if(cq>=levels[cl].questions.length)showLC();else loadQ()},1500)}}
+function showLC(){document.getElementById('current-score').textContent=sc;showScreen('screen-level-complete')}
+function nextLevel(){cl++;cq=0;if(cl>=levels.length)showWin();else{updateHUD();loadQ();showScreen('screen-game')}}
+function showWin(){document.getElementById('final-score').textContent=sc;showScreen('screen-win');gA=false}
+function gameOver(){document.getElementById('lose-score').textContent=sc;showScreen('screen-lose');gA=false}
+</script>
+</body>
+</html>

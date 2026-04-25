@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📖 Vida e Influencia de Elena G. de White 📖</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #juego-container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Pantalla de inicio */
+        #inicio {
+            padding: 40px;
+            text-align: center;
+            background: linear-gradient(to bottom, #4a148c, #283593);
+            color: white;
+        }
+
+        #inicio h1 {
+            font-size: 2.3em;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        #inicio p {
+            font-size: 1.2em;
+            margin: 15px 0;
+            line-height: 1.6;
+        }
+
+        .btn-iniciar {
+            background: linear-gradient(to right, #FFD700, #FFA500);
+            color: #8B4513;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.3em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+        }
+
+        .btn-iniciar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-iniciar:active {
+            transform: scale(0.98);
+        }
+
+        /* Barra superior */
+        #barra-superior {
+            background: #2C3E50;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        #puntos {
+            background: linear-gradient(to right, #FFD700, #FFA500);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 1.1em;
+            color: #8B4513;
+        }
+
+        #vidas {
+            background: linear-gradient(to right, #E74C3C, #C0392B);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 1.1em;
+        }
+
+        /* Nivel actual */
+        #nivel-container {
+            padding: 20px 30px;
+            text-align: center;
+            background: linear-gradient(to right, #3498DB, #2980B9);
+            color: white;
+        }
+
+        #nivel-titulo {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+
+        #nivel-descripcion {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        /* Pregunta */
+        #pregunta-container {
+            padding: 30px;
+            text-align: center;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        #pregunta-texto {
+            font-size: 1.6em;
+            color: #2C3E50;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        /* Respuestas */
+        #respuestas-container {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-respuesta {
+            background: linear-gradient(to right, #F9F9F9, #E0E0E0);
+            border: 3px solid #3498DB;
+            border-radius: 15px;
+            padding: 15px 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            font-weight: bold;
+            color: #2C3E50;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-respuesta:hover {
+            background: linear-gradient(to right, #E3F2FD, #BBDEFB);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-respuesta:active {
+            transform: translateY(1px);
+        }
+
+        .btn-respuesta.correcta {
+            background: linear-gradient(to right, #D4EDDA, #28A745);
+            border-color: #28A745;
+            color: white;
+            animation: bounce 0.5s;
+        }
+
+        .btn-respuesta.incorrecta {
+            background: linear-gradient(to right, #F8D7DA, #DC3545);
+            border-color: #DC3545;
+            color: white;
+            animation: shake 0.5s;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        /* Progreso */
+        #progreso-container {
+            padding: 15px 30px;
+            background: #ECF0F1;
+            text-align: center;
+            font-weight: bold;
+            color: #2C3E50;
+        }
+
+        /* Botones inferiores */
+        #botones-container {
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            background: #F8F9FA;
+            border-top: 2px solid #ECF0F1;
+        }
+
+        .btn-pista {
+            background: linear-gradient(to right, #FFF3CD, #FFC107);
+            color: #856404;
+            border: 2px solid #FFC107;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-pista:hover {
+            background: linear-gradient(to right, #FFEAA7, #FFB74D);
+            transform: scale(1.05);
+        }
+
+        .btn-salir {
+            background: linear-gradient(to right, #F8D7DA, #DC3545);
+            color: #721C24;
+            border: 2px solid #DC3545;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-salir:hover {
+            background: linear-gradient(to right, #F5C6CB, #C82333);
+            transform: scale(1.05);
+        }
+
+        .btn-inicio {
+            background: linear-gradient(to right, #4CAF50, #2E7D32);
+            color: white;
+            border: 2px solid #4CAF50;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-inicio:hover {
+            background: linear-gradient(to right, #66BB6A, #43A047);
+            transform: scale(1.05);
+        }
+
+        /* Pantallas modales */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: slideIn 0.5s;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal h2 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            color: #2C3E50;
+        }
+
+        .modal p {
+            font-size: 1.3em;
+            margin: 15px 0;
+            line-height: 1.6;
+        }
+
+        .btn-modal {
+            background: linear-gradient(to right, #3498DB, #2980B9);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-modal:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-modal.victoria {
+            background: linear-gradient(to right, #28A745, #20C997);
+        }
+
+        .btn-modal.derrota {
+            background: linear-gradient(to right, #DC3545, #C82333);
+        }
+
+        /* Efectos de transición */
+        .fade-in {
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            #inicio h1 {
+                font-size: 1.8em;
+            }
+            
+            #pregunta-texto {
+                font-size: 1.3em;
+            }
+            
+            .btn-respuesta {
+                font-size: 1em;
+                padding: 12px 15px;
+            }
+            
+            .btn-iniciar {
+                padding: 12px 30px;
+                font-size: 1.1em;
+            }
+        }
+
+        /* Insignias */
+        .insignia {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            margin: 5px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #8B4513;
+            font-weight: bold;
+            line-height: 60px;
+            font-size: 1.2em;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Animación de libros flotando */
+        #libros {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            display: none;
+        }
+
+        .libro {
+            position: absolute;
+            background: linear-gradient(to right, #8B4513, #A0522D);
+            width: 40px;
+            height: 60px;
+            border-radius: 5px 5px 0 0;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            animation: float 5s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-50px) rotate(5deg); }
+            50% { transform: translateY(-100px) rotate(0deg); }
+            75% { transform: translateY(-50px) rotate(-5deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="juego-container">
+        <!-- Pantalla de inicio -->
+        <div id="inicio">
+            <h1>📖 VIDA E INFLUENCIA DE ELENA G. DE WHITE 📖</h1>
+            <p>¡Hola, joven historiador! ✨</p>
+            <p>Descubre la vida extraordinaria de Elena G. de White, una mujer que escribió más de 100,000 páginas y ayudó a formar la Iglesia Adventista del Séptimo Día.</p>
+            <p>Aprende sobre sus visiones, su ministerio de escritura, su trabajo en educación y salud, y su legado eterno.</p>
+            <p>¿Estás listo para conocer a esta gran sierva de Dios? 🌟</p>
+            <button class="btn-iniciar" onclick="iniciarJuego()">🎮 ¡EMPEZAR AVENTURA!</button>
+        </div>
+
+        <!-- Barra superior -->
+        <div id="barra-superior" style="display: none;">
+            <div id="puntos">⭐ Puntos: 0</div>
+            <div id="vidas">❤️ Vidas: 3</div>
+        </div>
+
+        <!-- Nivel actual -->
+        <div id="nivel-container" style="display: none;">
+            <div id="nivel-titulo">NIVEL 1: Niñez y Conversión</div>
+            <div id="nivel-descripcion">Gorham, Maine - Los primeros años</div>
+        </div>
+
+        <!-- Pregunta -->
+        <div id="pregunta-container" style="display: none;">
+            <div id="pregunta-texto">¿Cuándo nació Elena G. Harmon?</div>
+            <div id="respuestas-container">
+                <button class="btn-respuesta" onclick="responder(0)">26 de noviembre de 1827</button>
+                <button class="btn-respuesta" onclick="responder(1)">15 de enero de 1830</button>
+                <button class="btn-respuesta" onclick="responder(2)">10 de diciembre de 1825</button>
+            </div>
+        </div>
+
+        <!-- Progreso -->
+        <div id="progreso-container" style="display: none;">
+            Pregunta <span id="pregunta-actual">1</span> de <span id="total-preguntas">7</span>
+        </div>
+
+        <!-- Botones inferiores -->
+        <div id="botones-container" style="display: none;">
+            <button class="btn-pista" onclick="usarPista()">💡 Pista (-50 puntos)</button>
+            <div>
+                <button class="btn-inicio" onclick="volverInicio()">🏠 Volver al Inicio</button>
+                <button class="btn-salir" onclick="salirJuego()">🚪 Salir</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Victoria -->
+    <div id="modal-victoria" class="modal">
+        <div class="modal-content">
+            <h2>🏆 ¡EXCELENTE TRABAJO! 🏆</h2>
+            <p>¡Has completado toda la vida de Elena White!</p>
+            <p>----------</p>
+            <p><strong>Puntos totales:</strong> <span id="puntos-final">0</span></p>
+            <p>----------</p>
+            <p>¡Eres un verdadero experto en la vida de Elena White! 📚✨</p>
+            <div style="margin-top: 20px;">
+                <div style="margin: 15px 0;">
+                    <span class="insignia">👶</span>
+                    <span class="insignia">📖</span>
+                    <span class="insignia">✝️</span>
+                    <span class="insignia">🏥</span>
+                    <span class="insignia">🎓</span>
+                </div>
+                <p>Todas las insignias desbloqueadas</p>
+            </div>
+            <button class="btn-modal victoria" onclick="reiniciarJuego()">🔄 ¡Jugar de nuevo!</button>
+            <button class="btn-modal" onclick="cerrarModal('modal-victoria')">❌ Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Modal Derrota -->
+    <div id="modal-derrota" class="modal">
+        <div class="modal-content">
+            <h2>😢 ¡SIGUE INTENTANDO! 😢</h2>
+            <p>Has perdido todas tus vidas.</p>
+            <p>----------</p>
+            <p><strong>Puntos finales:</strong> <span id="puntos-derrota">0</span></p>
+            <p>----------</p>
+            <p>¡No te rindas! Inténtalo de nuevo. 💪</p>
+            <button class="btn-modal derrota" onclick="reiniciarJuego()">🔄 ¡Intentar de nuevo!</button>
+            <button class="btn-modal" onclick="cerrarModal('modal-derrota')">❌ Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Modal Nivel Completado -->
+    <div id="modal-nivel" class="modal">
+        <div class="modal-content">
+            <h2>🎉 ¡NIVEL COMPLETADO! 🎉</h2>
+            <p id="nivel-completado-texto">¡Excelente trabajo!</p>
+            <p>----------</p>
+            <p><strong>Puntos actuales:</strong> <span id="puntos-nivel">0</span></p>
+            <button class="btn-modal" onclick="cerrarModal('modal-nivel')">➡️ ¡Siguiente nivel!</button>
+        </div>
+    </div>
+
+    <!-- Libros flotando -->
+    <div id="libros"></div>
+
+    <script>
+        // Variables del juego
+        let nivelActual = 1;
+        let preguntaActual = 0;
+        let puntos = 0;
+        let vidas = 3;
+        let preguntas = [];
+        let respuestaCorrectaIndex = 0;
+
+        // Cargar preguntas
+        function cargarPreguntas() {
+            // NIVEL 1: Niñez y Conversión
+            preguntas.push({
+                nivel: 1,
+                texto: "¿Cuándo nació Elena G. Harmon?",
+                respuestas: ["26 de noviembre de 1827", "15 de enero de 1830", "10 de diciembre de 1825"],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 1,
+                texto: "¿Qué le sucedió a Elena a los 9 años que la obligó a dejar la escuela?",
+                respuestas: ["Una enfermedad grave", "Una pedrada en la nariz que le afectó la vista", "La muerte de su padre"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 1,
+                texto: "¿A qué edad fue bautizada Elena por inmersión?",
+                respuestas: ["10 años", "12 años", "15 años"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 1,
+                texto: "¿Dónde fue bautizada Elena?",
+                respuestas: ["En un río cercano", "En una playa del Océano Atlántico", "En la iglesia local"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 1,
+                texto: "¿Quién predicó en Portland cuando Elena tenía 12 años?",
+                respuestas: ["José Bates", "William Miller", "Jaime White"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 1,
+                texto: "¿Qué sintió Elena después del Gran Chasco del 22 de octubre de 1844?",
+                respuestas: ["Perdió completamente la fe", "Se sintió chasqueada pero nunca perdió confianza en que Jesús vendría", "Dejó de creer en las profecías"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 1,
+                texto: "¿Cuándo recibió Elena su primera visión?",
+                respuestas: ["A los 9 años", "A los 12 años", "Pocas semanas después del Gran Chasco"],
+                correcta: 2
+            });
+
+            // NIVEL 2: Primeras Visiones y Matrimonio
+            preguntas.push({
+                nivel: 2,
+                texto: "¿Qué vio Elena en su primera visión?",
+                respuestas: ["Un sendero estrecho hacia la santa ciudad con Jesús al final", "Ángeles cantando", "El cielo abierto"],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 2,
+                texto: "¿Cuántos años tenía Elena cuando un ángel le dijo que era mensajera del Señor?",
+                respuestas: ["15 años", "17 años", "20 años"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 2,
+                texto: "¿Cómo era la voz de Elena antes de sus visiones?",
+                respuestas: ["Fuerte y clara", "Tan débil que parecía un susurro", "Normal"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 2,
+                texto: "¿Qué sucedió con la voz de Elena cuando comenzó a contar sus visiones?",
+                respuestas: ["Se volvió más débil", "Se le fue fortaleciendo y pudo hablar con claridad", "Desapareció por completo"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 2,
+                texto: "¿Quiénes eran Sargent y Robbins?",
+                respuestas: ["Dos hombres que decían que las visiones de Elena provenían del demonio", "Dos pastores adventistas", "Dos médicos que la trataban"],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 2,
+                texto: "¿Cuánto duró la visión de Elena en Randolph mientras sostenía una Biblia de 9 kg?",
+                respuestas: ["2 horas", "4 horas", "6 horas"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 2,
+                texto: "¿Cuándo se casaron Elena y Jaime White?",
+                respuestas: ["Enero de 1845", "Agosto de 1846", "Octubre de 1844"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 2,
+                texto: "¿Cuál era la profesión de Jaime White antes de ser predicador?",
+                respuestas: ["Agricultor", "Maestro de escuela", "Sombrerero"],
+                correcta: 1
+            });
+
+            // NIVEL 3: Ministerio de Publicaciones y Visiones
+            preguntas.push({
+                nivel: 3,
+                texto: "¿Quién mostró a los White que debían guardar el sábado?",
+                respuestas: ["William Miller", "José Bates (capitán de barco)", "Hiram Edson"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 3,
+                texto: "¿Qué visión convenció a José Bates de que las visiones de Elena eran de Dios?",
+                respuestas: ["La visión del arca en el cielo", "La descripción de la abertura en la constelación de Orión", "La visión del sendero celestial"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 3,
+                texto: "¿Qué mandamiento brillaba más que los otros en la visión del arca?",
+                respuestas: ["El primero", "El tercero", "El cuarto (sábado)"],
+                correcta: 2
+            });
+
+            preguntas.push({
+                nivel: 3,
+                texto: "¿Cuándo empezaron los congresos sobre el sábado?",
+                respuestas: ["1845", "1848", "1850"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 3,
+                texto: "¿Cuál fue el primer periódico adventista que Jaime White comenzó a imprimir?",
+                respuestas: ["The Signs of the Times", "The Present Truth (La Verdad Presente)", "Review and Herald"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 3,
+                texto: "¿Qué le dijo Dios a Elena sobre el periódico en visión?",
+                respuestas: ["Que sería un fracaso", "Que desde ese pequeño comienzo saldrían rayos de luz que circundarían el globo", "Que solo duraría un año"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 3,
+                texto: "¿Cuál fue el segundo hijo de los White y el nombre de la segunda revista?",
+                respuestas: ["Henry y The Advent Review", "James Edson y The Second Advent Review and Sabbath Herald", "Herbert y The Signs"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 3,
+                texto: "¿Cuál fue el primer libro de Elena White?",
+                respuestas: ["Patriarcas y Profetas", "A Sketch of the Christian Experience and Views of E.G. White", "El Deseado de Todas las Gentes"],
+                correcta: 1
+            });
+
+            // NIVEL 4: Educación, Salud y Misiones
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Qué visión recibió Elena en Lovett Grove durante un funeral?",
+                respuestas: ["La visión del arca celestial", "La visión de la controversia entre Cristo y Satanás", "La visión de los diez mandamientos"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Cuánto tiempo duró la visión de la Gran Controversia en Lovett Grove?",
+                respuestas: ["1 hora", "2 horas", "4 horas"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Cuál fue el primer libro que contenía la visión del gran conflicto?",
+                respuestas: ["Patriarcas y Profetas", "Spiritual Gifts (Dones Espirituales)", "El Conflicto de los Siglos"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Cuándo se organizó oficialmente la Asociación General?",
+                respuestas: ["1860", "1863", "1874"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Dónde recibió Elena la visión sobre los principios de salud?",
+                respuestas: ["En su casa en Battle Creek", "En casa de la familia Hilliard", "En el sanatorio"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Cuánto duró la visión sobre salud en casa de los Hilliard?",
+                respuestas: ["30 minutos", "45 minutos", "1 hora"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Cuál fue la primera institución médica adventista?",
+                respuestas: ["Loma Linda", "Western Reform Institute", "Sanatorio de Battle Creek"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Cuándo se celebró el primer congreso campestre adventista?",
+                respuestas: ["1865", "1868", "1870"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Cuándo se abrió el primer colegio adventista en Battle Creek?",
+                respuestas: ["1872", "1874", "1880"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Quién fue el primer misionero adventista al extranjero por insistencia de Elena?",
+                respuestas: ["Michael Czechowski", "John Nevins Andrews", "William Ings"],
+                correcta: 1
+            });
+
+            // NIVEL 5: Últimos Años y Legado
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Cuándo murió Jaime White?",
+                respuestas: ["1875", "1881", "1885"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Cuántos años estuvo Elena White en Australia?",
+                respuestas: ["5 años", "10 años", "15 años"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Qué tres libros importantes terminó Elena en Australia?",
+                respuestas: ["Patriarcas y Profetas, Profetas y Reyes, Deseado de Todas las Gentes", "El Discurso Maestro, Lecciones Prácticas, El Deseado de Todas las Gentes", "Hechos de los Apóstoles, Conflicto de los Siglos, Camino a Cristo"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Cómo se llamaba la casa de Elena White en Australia?",
+                respuestas: ["Sunnyside", "Avondale House", "White Haven"],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Qué visión tuvo Elena sobre el lugar del Colegio de Avondale?",
+                respuestas: ["Un edificio terminado", "Un campo arado", "Un árbol grande"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Qué institución se fundó en California en 1905 por una serie de milagros?",
+                respuestas: ["Universidad de Loma Linda", "Colegio de Médicos Evangelistas", "Ambas anteriores"],
+                correcta: 2
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Dónde vivió Elena White sus últimos 15 años?",
+                respuestas: ["Battle Creek", "Washington DC", "Elmshaven, California"],
+                correcta: 2
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Cuántos tomos de Testimonios para la Iglesia se publicaron en total?",
+                respuestas: ["4 tomos", "9 tomos", "12 tomos"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Cuándo murió Elena G. de White?",
+                respuestas: ["1905", "1915", "1925"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Cuál fue el último mensaje de Elena White en el Congreso de la Asociación General?",
+                respuestas: ["Predicad el evangelio", "Hermanos, les recomiendo este libro (sosteniendo una Biblia)", "Guardad el sábado"],
+                correcta: 1
+            });
+        }
+
+        // Iniciar juego
+        function iniciarJuego() {
+            cargarPreguntas();
+            nivelActual = 1;
+            preguntaActual = 0;
+            puntos = 0;
+            vidas = 3;
+            
+            // Ocultar pantalla de inicio
+            document.getElementById('inicio').style.display = 'none';
+            
+            // Mostrar elementos del juego
+            document.getElementById('barra-superior').style.display = 'flex';
+            document.getElementById('nivel-container').style.display = 'block';
+            document.getElementById('pregunta-container').style.display = 'block';
+            document.getElementById('progreso-container').style.display = 'block';
+            document.getElementById('botones-container').style.display = 'flex';
+            
+            // Actualizar UI
+            mostrarNivel();
+            mostrarPregunta();
+            actualizarUI();
+        }
+
+        // Mostrar nivel
+        function mostrarNivel() {
+            const nivelTitulo = document.getElementById('nivel-titulo');
+            const nivelDescripcion = document.getElementById('nivel-descripcion');
+            const nivelContainer = document.getElementById('nivel-container');
+
+            switch(nivelActual) {
+                case 1:
+                    nivelTitulo.textContent = "NIVEL 1: Niñez y Conversión";
+                    nivelDescripcion.textContent = "Gorham, Maine - Los primeros años";
+                    nivelContainer.style.background = "linear-gradient(to right, #3498DB, #2980B9)";
+                    break;
+                case 2:
+                    nivelTitulo.textContent = "NIVEL 2: Primeras Visiones y Matrimonio";
+                    nivelDescripcion.textContent = "Visiones milagrosas y unión con Jaime";
+                    nivelContainer.style.background = "linear-gradient(to right, #9B59B6, #8E44AD)";
+                    break;
+                case 3:
+                    nivelTitulo.textContent = "NIVEL 3: Ministerio de Publicaciones";
+                    nivelDescripcion.textContent = "Periódicos, libros y el poder de la palabra";
+                    nivelContainer.style.background = "linear-gradient(to right, #27AE60, #219653)";
+                    break;
+                case 4:
+                    nivelTitulo.textContent = "NIVEL 4: Educación, Salud y Misiones";
+                    nivelDescripcion.textContent = "Fundando instituciones para el mundo";
+                    nivelContainer.style.background = "linear-gradient(to right, #F39C12, #E67E22)";
+                    break;
+                case 5:
+                    nivelTitulo.textContent = "NIVEL 5: Últimos Años y Legado";
+                    nivelDescripcion.textContent = "El legado eterno de Elena White";
+                    nivelContainer.style.background = "linear-gradient(to right, #E74C3C, #C0392B)";
+                    break;
+            }
+        }
+
+        // Mostrar pregunta
+        function mostrarPregunta() {
+            const preguntasNivel = preguntas.filter(p => p.nivel === nivelActual);
+            
+            if (preguntaActual >= preguntasNivel.length) {
+                // Completar nivel
+                mostrarModalNivel();
+                return;
+            }
+            
+            const pregunta = preguntasNivel[preguntaActual];
+            document.getElementById('pregunta-texto').textContent = pregunta.texto;
+            
+            // Mezclar respuestas
+            const respuestasMezcladas = [...Array(pregunta.respuestas.length).keys()].sort(() => Math.random() - 0.5);
+            
+            const botonesRespuesta = document.querySelectorAll('.btn-respuesta');
+            botonesRespuesta.forEach((btn, index) => {
+                if (index < pregunta.respuestas.length) {
+                    btn.textContent = pregunta.respuestas[respuestasMezcladas[index]];
+                    btn.className = 'btn-respuesta';
+                    btn.dataset.indiceOriginal = respuestasMezcladas[index];
+                    btn.style.display = 'block';
+                } else {
+                    btn.style.display = 'none';
+                }
+            });
+            
+            // Guardar respuesta correcta
+            respuestaCorrectaIndex = respuestasMezcladas.indexOf(pregunta.correcta);
+            
+            // Actualizar progreso
+            document.getElementById('pregunta-actual').textContent = preguntaActual + 1;
+            document.getElementById('total-preguntas').textContent = preguntasNivel.length;
+        }
+
+        // Responder pregunta
+        function responder(indice) {
+            const botonesRespuesta = document.querySelectorAll('.btn-respuesta');
+            
+            // Desactivar todos los botones temporalmente
+            botonesRespuesta.forEach(btn => {
+                if (btn.style.display !== 'none') {
+                    btn.disabled = true;
+                }
+            });
+            
+            // Verificar respuesta
+            if (indice === respuestaCorrectaIndex) {
+                // Respuesta correcta
+                puntos += 100;
+                preguntaActual++;
+                
+                // Marcar como correcta
+                botonesRespuesta[indice].classList.add('correcta');
+                
+                // Alerta de correcto
+                setTimeout(() => {
+                    alert('¡Correcto! 📖\n+100 puntos');
+                    botonesRespuesta.forEach(btn => {
+                        btn.disabled = false;
+                        btn.className = 'btn-respuesta';
+                    });
+                    mostrarPregunta();
+                    actualizarUI();
+                }, 500);
+            } else {
+                // Respuesta incorrecta
+                vidas--;
+                
+                // Marcar como incorrecta
+                botonesRespuesta[indice].classList.add('incorrecta');
+                botonesRespuesta[respuestaCorrectaIndex].classList.add('correcta');
+                
+                // Alerta de incorrecto
+                setTimeout(() => {
+                    alert('¡Incorrecto! 😔\n-1 vida');
+                    botonesRespuesta.forEach(btn => {
+                        btn.disabled = false;
+                        btn.className = 'btn-respuesta';
+                    });
+                    
+                    if (vidas <= 0) {
+                        mostrarDerrota();
+                    } else {
+                        mostrarPregunta();
+                        actualizarUI();
+                    }
+                }, 500);
+            }
+        }
+
+        // Actualizar UI
+        function actualizarUI() {
+            document.getElementById('puntos').textContent = `⭐ Puntos: ${puntos}`;
+            document.getElementById('vidas').textContent = `❤️ Vidas: ${vidas}`;
+        }
+
+        // Mostrar modal de nivel completado
+        function mostrarModalNivel() {
+            nivelActual++;
+            
+            if (nivelActual > 5) {
+                mostrarVictoria();
+                return;
+            }
+            
+            document.getElementById('nivel-completado-texto').textContent = `¡Has completado el Nivel ${nivelActual - 1}!`;
+            document.getElementById('puntos-nivel').textContent = puntos;
+            document.getElementById('modal-nivel').style.display = 'flex';
+        }
+
+        // Cerrar modal
+        function cerrarModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            
+            if (modalId === 'modal-nivel') {
+                mostrarNivel();
+                mostrarPregunta();
+            }
+        }
+
+        // Mostrar victoria
+        function mostrarVictoria() {
+            document.getElementById('puntos-final').textContent = puntos;
+            document.getElementById('modal-victoria').style.display = 'flex';
+            
+            // Mostrar libros flotando
+            mostrarLibros();
+        }
+
+        // Mostrar derrota
+        function mostrarDerrota() {
+            document.getElementById('puntos-derrota').textContent = puntos;
+            document.getElementById('modal-derrota').style.display = 'flex';
+        }
+
+        // Reiniciar juego
+        function reiniciarJuego() {
+            cerrarModal('modal-victoria');
+            cerrarModal('modal-derrota');
+            cerrarModal('modal-nivel');
+            document.getElementById('libros').style.display = 'none';
+            
+            // Reiniciar variables
+            nivelActual = 1;
+            preguntaActual = 0;
+            puntos = 0;
+            vidas = 3;
+            
+            // Ocultar elementos del juego
+            document.getElementById('barra-superior').style.display = 'none';
+            document.getElementById('nivel-container').style.display = 'none';
+            document.getElementById('pregunta-container').style.display = 'none';
+            document.getElementById('progreso-container').style.display = 'none';
+            document.getElementById('botones-container').style.display = 'none';
+            
+            // Mostrar pantalla de inicio
+            document.getElementById('inicio').style.display = 'block';
+        }
+
+        // Usar pista
+        function usarPista() {
+            if (puntos >= 50) {
+                puntos -= 50;
+                const pregunta = preguntas.filter(p => p.nivel === nivelActual)[preguntaActual];
+                alert(`💡 PISTA:\nLa respuesta correcta contiene la palabra: "${pregunta.respuestas[pregunta.correcta].split(' ')[0]}"`);
+                actualizarUI();
+            } else {
+                alert('¡Necesitas al menos 50 puntos para usar una pista!');
+            }
+        }
+
+        // Salir del juego
+        function salirJuego() {
+            if (confirm('¿Estás seguro de que quieres salir?')) {
+                reiniciarJuego();
+            }
+        }
+
+        // Libros flotando (simulación de los libros de Elena White)
+        function mostrarLibros() {
+            const contenedor = document.getElementById('libros');
+            contenedor.style.display = 'block';
+
+            // Crear 15 libros flotando
+            for (let i = 0; i < 15; i++) {
+                const libro = document.createElement('div');
+                libro.className = 'libro';
+
+                // Posicionar aleatoriamente
+                const left = Math.random() * 100;
+                const top = Math.random() * 100;
+                const delay = Math.random() * 5;
+
+                libro.style.left = `${left}%`;
+                libro.style.top = `${top}%`;
+                libro.style.animationDelay = `${delay}s`;
+
+                // Tamaño aleatorio
+                const size = 0.8 + Math.random() * 0.6;
+                libro.style.transform = `scale(${size})`;
+
+                contenedor.appendChild(libro);
+            }
+
+            // Ocultar contenedor después de 6 segundos
+            setTimeout(() => {
+                contenedor.style.display = 'none';
+                // Limpiar libros
+                contenedor.innerHTML = '';
+            }, 6000);
+        }
+
+        // Volver al inicio
+        function volverInicio() {
+            window.location.href = '../index.html';
+        }
+    </script>
+</body>
+</html>

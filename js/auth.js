@@ -33,9 +33,12 @@ async function login(email, password) {
     }
     
     try {
+        // Intentar cerrar sesión previa para limpiar estados residuales
+        await supabase.auth.signOut().catch(() => {});
+
         const { data, error } = await supabase.auth.signInWithPassword({
-            email: email,
-            password: password
+            email: email.trim(),
+            password: password.trim()
         });
 
         if (error) throw error;
@@ -43,7 +46,16 @@ async function login(email, password) {
         updateAuthUI(data.session);
         return { success: true };
     } catch (error) {
-        return { success: false, error: error.message };
+        console.error('Login error detail:', error);
+        let customMessage = error.message;
+        
+        // Traducir y clarificar errores comunes de Supabase Auth
+        if (error.status === 400 && error.message === 'Invalid login credentials') {
+            customMessage = 'Correo o contraseña incorrectos. Asegúrate de que el usuario esté "Confirmado" en el panel de Supabase.';
+        } else if (error.message === 'Email logins are disabled') {
+            customMessage = 'El inicio de sesión por correo está desactivado en el panel de Supabase (Authentication > Providers).';
+        }
+        return { success: false, error: customMessage };
     }
 }
 

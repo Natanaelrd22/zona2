@@ -1,5 +1,5 @@
 const SUPABASE_URL = 'https://lolcljygjkclxlemsqaz.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_ck-tBxq12Vj5UFomrDkQvQ_ep2vlv1C';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxvbGNsanlnamtjbHhsZW1zcWF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxMjMzMjMsImV4cCI6MjA5MTY5OTMyM30.RDtSRC4nd7dixK78CS68qqlhVYilIyzJUE6siiyS2oI';
 
 function isConfigured() {
     return SUPABASE_URL && SUPABASE_ANON_KEY;

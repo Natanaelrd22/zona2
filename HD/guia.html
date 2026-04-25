@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📜 El Secreto Revelado: Historia Profética Adventista 📜</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #juego-container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Pantalla de inicio */
+        #inicio {
+            padding: 40px;
+            text-align: center;
+            background: linear-gradient(to bottom, #0a2463, #1a237e);
+            color: white;
+        }
+
+        #inicio h1 {
+            font-size: 2.2em;
+            margin-bottom: 15px;
+            text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        #inicio .versiculo {
+            font-style: italic;
+            background: rgba(255, 215, 0, 0.2);
+            padding: 15px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-size: 1.3em;
+            border: 2px dashed gold;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        #inicio p {
+            font-size: 1.2em;
+            margin: 15px 0;
+            line-height: 1.6;
+        }
+
+        .btn-iniciar {
+            background: linear-gradient(to right, #FFD700, #FFA500);
+            color: #8B4513;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.3em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+        }
+
+        .btn-iniciar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-iniciar:active {
+            transform: scale(0.98);
+        }
+
+        /* Barra superior */
+        #barra-superior {
+            background: #2C3E50;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        #puntos {
+            background: linear-gradient(to right, #FFD700, #FFA500);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 1.1em;
+            color: #8B4513;
+        }
+
+        #vidas {
+            background: linear-gradient(to right, #E74C3C, #C0392B);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 1.1em;
+        }
+
+        /* Nivel actual */
+        #nivel-container {
+            padding: 20px 30px;
+            text-align: center;
+            background: linear-gradient(to right, #3498DB, #2980B9);
+            color: white;
+        }
+
+        #nivel-titulo {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+
+        #nivel-descripcion {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        /* Pregunta */
+        #pregunta-container {
+            padding: 30px;
+            text-align: center;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        #pregunta-texto {
+            font-size: 1.6em;
+            color: #2C3E50;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        /* Respuestas */
+        #respuestas-container {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-respuesta {
+            background: linear-gradient(to right, #F9F9F9, #E0E0E0);
+            border: 3px solid #3498DB;
+            border-radius: 15px;
+            padding: 15px 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            font-weight: bold;
+            color: #2C3E50;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-respuesta:hover {
+            background: linear-gradient(to right, #E3F2FD, #BBDEFB);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-respuesta:active {
+            transform: translateY(1px);
+        }
+
+        .btn-respuesta.correcta {
+            background: linear-gradient(to right, #D4EDDA, #28A745);
+            border-color: #28A745;
+            color: white;
+            animation: bounce 0.5s;
+        }
+
+        .btn-respuesta.incorrecta {
+            background: linear-gradient(to right, #F8D7DA, #DC3545);
+            border-color: #DC3545;
+            color: white;
+            animation: shake 0.5s;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        /* Progreso */
+        #progreso-container {
+            padding: 15px 30px;
+            background: #ECF0F1;
+            text-align: center;
+            font-weight: bold;
+            color: #2C3E50;
+        }
+
+        /* Botones inferiores */
+        #botones-container {
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            background: #F8F9FA;
+            border-top: 2px solid #ECF0F1;
+        }
+
+        .btn-pista {
+            background: linear-gradient(to right, #FFF3CD, #FFC107);
+            color: #856404;
+            border: 2px solid #FFC107;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-pista:hover {
+            background: linear-gradient(to right, #FFEAA7, #FFB74D);
+            transform: scale(1.05);
+        }
+
+        .btn-salir {
+            background: linear-gradient(to right, #F8D7DA, #DC3545);
+            color: #721C24;
+            border: 2px solid #DC3545;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-salir:hover {
+            background: linear-gradient(to right, #F5C6CB, #C82333);
+            transform: scale(1.05);
+        }
+
+        .btn-inicio {
+            background: linear-gradient(to right, #4CAF50, #2E7D32);
+            color: white;
+            border: 2px solid #4CAF50;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-inicio:hover {
+            background: linear-gradient(to right, #66BB6A, #43A047);
+            transform: scale(1.05);
+        }
+
+        /* Pantallas modales */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: slideIn 0.5s;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal h2 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            color: #2C3E50;
+        }
+
+        .modal p {
+            font-size: 1.3em;
+            margin: 15px 0;
+            line-height: 1.6;
+        }
+
+        .btn-modal {
+            background: linear-gradient(to right, #3498DB, #2980B9);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-modal:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-modal.victoria {
+            background: linear-gradient(to right, #28A745, #20C997);
+        }
+
+        .btn-modal.derrota {
+            background: linear-gradient(to right, #DC3545, #C82333);
+        }
+
+        /* Efectos de transición */
+        .fade-in {
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            #inicio h1 {
+                font-size: 1.8em;
+            }
+            
+            #pregunta-texto {
+                font-size: 1.3em;
+            }
+            
+            .btn-respuesta {
+                font-size: 1em;
+                padding: 12px 15px;
+            }
+            
+            .btn-iniciar {
+                padding: 12px 30px;
+                font-size: 1.1em;
+            }
+        }
+
+        /* Insignias */
+        .insignia {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            margin: 5px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #8B4513;
+            font-weight: bold;
+            line-height: 60px;
+            font-size: 1.2em;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Animación de pergaminos */
+        #pergaminos {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            display: none;
+        }
+
+        .pergamino {
+            position: absolute;
+            background: linear-gradient(to right, #f5e6ca, #e6d3a7);
+            width: 60px;
+            height: 40px;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            animation: roll 4s infinite linear;
+            transform-origin: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #8B4513;
+            font-size: 12px;
+            padding: 5px;
+        }
+
+        @keyframes roll {
+            0% { transform: translate(-100px, 0) rotate(0deg); opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translate(calc(100vw + 100px), 0) rotate(720deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div id="juego-container">
+        <!-- Pantalla de inicio -->
+        <div id="inicio">
+            <h1>📜 EL SECRETO REVELADO 📜</h1>
+            <div class="versiculo">
+                "Porque no hará nada Jehová el Señor,<br>
+                sin que revele su secreto a sus siervos los profetas"<br>
+                <strong>— Amos 3:7</strong>
+            </div>
+            <p>¡Hola, explorador profético! ✨</p>
+            <p>Descubre la emocionante historia de cómo Dios reveló sus secretos a través de las profecías de Daniel y Apocalipsis.</p>
+            <p>Aprende sobre Guillermo Miller, el Gran Chasco, el Santuario Celestial, Elena White y cómo el mensaje llegó a todo el mundo.</p>
+            <p>¿Estás listo para descubrir los secretos de Dios? 🔮</p>
+            <button class="btn-iniciar" onclick="iniciarJuego()">🎮 ¡EMPEZAR AVENTURA!</button>
+        </div>
+
+        <!-- Barra superior -->
+        <div id="barra-superior" style="display: none;">
+            <div id="puntos">⭐ Puntos: 0</div>
+            <div id="vidas">❤️ Vidas: 3</div>
+        </div>
+
+        <!-- Nivel actual -->
+        <div id="nivel-container" style="display: none;">
+            <div id="nivel-titulo">NIVEL 1: La Profecía de los 2,300 Días</div>
+            <div id="nivel-descripcion">Daniel 8:14 - El tiempo profético</div>
+        </div>
+
+        <!-- Pregunta -->
+        <div id="pregunta-container" style="display: none;">
+            <div id="pregunta-texto">¿Cuántos años abarcan los 2,300 días proféticos según Daniel 8:14?</div>
+            <div id="respuestas-container">
+                <button class="btn-respuesta" onclick="responder(0)">230 años</button>
+                <button class="btn-respuesta" onclick="responder(1)">2,300 años</button>
+                <button class="btn-respuesta" onclick="responder(2)">23,000 años</button>
+            </div>
+        </div>
+
+        <!-- Progreso -->
+        <div id="progreso-container" style="display: none;">
+            Pregunta <span id="pregunta-actual">1</span> de <span id="total-preguntas">8</span>
+        </div>
+
+        <!-- Botones inferiores -->
+        <div id="botones-container" style="display: none;">
+            <button class="btn-pista" onclick="usarPista()">💡 Pista (-50 puntos)</button>
+            <button class="btn-salir" onclick="salirJuego()">🚪 Salir</button>
+            <button class="btn-inicio" onclick="volverInicio()">🏠 Volver al Inicio</button>
+        </div>
+    </div>
+
+    <!-- Modal Victoria -->
+    <div id="modal-victoria" class="modal">
+        <div class="modal-content">
+            <h2>🏆 ¡SECRETO REVELADO! 🏆</h2>
+            <p>¡Has completado toda la historia profética!</p>
+            <p>----------</p>
+            <p><strong>Puntos totales:</strong> <span id="puntos-final">0</span></p>
+            <p>----------</p>
+            <p>¡Eres un verdadero explorador de las profecías de Dios! ✨</p>
+            <div style="margin-top: 20px;">
+                <div style="margin: 15px 0;">
+                    <span class="insignia">2300</span>
+                    <span class="insignia">⛪</span>
+                    <span class="insignia">📖</span>
+                    <span class="insignia">🌍</span>
+                    <span class="insignia">✝️</span>
+                </div>
+                <p>Todas las insignias proféticas desbloqueadas</p>
+            </div>
+            <button class="btn-modal victoria" onclick="reiniciarJuego()">🔄 ¡Jugar de nuevo!</button>
+            <button class="btn-modal" onclick="cerrarModal('modal-victoria')">❌ Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Modal Derrota -->
+    <div id="modal-derrota" class="modal">
+        <div class="modal-content">
+            <h2>😢 ¡SECRETO AÚN OCULTO! 😢</h2>
+            <p>Has perdido todas tus vidas.</p>
+            <p>----------</p>
+            <p><strong>Puntos finales:</strong> <span id="puntos-derrota">0</span></p>
+            <p>----------</p>
+            <p>¡No te rindas! Inténtalo de nuevo. 💪</p>
+            <button class="btn-modal derrota" onclick="reiniciarJuego()">🔄 ¡Intentar de nuevo!</button>
+            <button class="btn-modal" onclick="cerrarModal('modal-derrota')">❌ Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Modal Nivel Completado -->
+    <div id="modal-nivel" class="modal">
+        <div class="modal-content">
+            <h2>🎉 ¡NIVEL COMPLETADO! 🎉</h2>
+            <p id="nivel-completado-texto">¡Excelente trabajo, profeta!</p>
+            <p>----------</p>
+            <p><strong>Puntos actuales:</strong> <span id="puntos-nivel">0</span></p>
+            <button class="btn-modal" onclick="cerrarModal('modal-nivel')">➡️ ¡Siguiente revelación!</button>
+        </div>
+    </div>
+
+    <!-- Pergaminos volando -->
+    <div id="pergaminos"></div>
+
+    <script>
+        // Variables del juego
+        let nivelActual = 1;
+        let preguntaActual = 0;
+        let puntos = 0;
+        let vidas = 3;
+        let preguntas = [];
+        let respuestaCorrectaIndex = 0;
+
+        // Cargar preguntas
+        function cargarPreguntas() {
+            // NIVEL 1: La Profecía de los 2,300 Días
+            preguntas.push({
+                nivel: 1,
+                texto: "¿Cuántos años abarcan los 2,300 días proféticos según Daniel 8:14?",
+                respuestas: ["230 años", "2,300 años", "23,000 años"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 1,
+                texto: "¿En qué año comenzaron los 2,300 años proféticos según el decreto de Artajerjes?",
+                respuestas: ["457 a.C.", "538 a.C.", "605 a.C."],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 1,
+                texto: "¿En qué año terminaron los 2,300 años proféticos?",
+                respuestas: ["1843", "1844", "1845"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 1,
+                texto: "¿Qué evento marcó el inicio de los 2,300 años?",
+                respuestas: ["El nacimiento de Cristo", "El decreto de Artajerjes para restaurar Jerusalén", "La destrucción del templo"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 1,
+                texto: "¿Quién fue llamado por Dios para estudiar y predicar sobre esta profecía?",
+                respuestas: ["José Bates", "Guillermo Miller", "Hiram Edson"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 1,
+                texto: "¿Qué motivó a Guillermo Miller a estudiar la Biblia en 1816?",
+                respuestas: ["La guerra de 1812 y su violencia", "Un sueño profético", "La muerte de su esposa"],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 1,
+                texto: "¿Cuántos años estudió Guillermo Miller la Biblia antes de llegar a sus conclusiones?",
+                respuestas: ["5 años", "10 años", "16 años"],
+                correcta: 2
+            });
+
+            preguntas.push({
+                nivel: 1,
+                texto: "¿Qué entendió inicialmente Miller que significaba 'la purificación del santuario'?",
+                respuestas: ["La purificación del santuario celestial", "La purificación de la tierra por fuego (fin del mundo)", "La reforma de la iglesia"],
+                correcta: 1
+            });
+
+            // NIVEL 2: El Gran Chasco y el Santuario Celestial
+            preguntas.push({
+                nivel: 2,
+                texto: "¿Cuál fue la primera fecha que Miller predijo para la venida de Cristo?",
+                respuestas: ["21 de marzo de 1843", "21 de marzo de 1844", "22 de octubre de 1844"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 2,
+                texto: "¿En qué congreso se determinó que Cristo vendría el 22 de octubre de 1844?",
+                respuestas: ["Congreso de New Hampshire (17 de agosto de 1844)", "Congreso de Boston", "Congreso de Maine"],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 2,
+                texto: "¿Cómo se llamó el movimiento de predicación antes del 22 de octubre de 1844?",
+                respuestas: ["El Clamor de Medianoche", "El Grito de la Mañana", "El Mensaje del Ángel"],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 2,
+                texto: "¿Qué mensaje proclamaron los adventistas antes del 22 de octubre?",
+                respuestas: ["¡Preparaos para el juicio!", "¡Ahí viene el esposo, salid a recibirle!", "¡El santuario será purificado!"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 2,
+                texto: "¿Qué sucedió el 22 de octubre de 1844?",
+                respuestas: ["Jesús vino a la tierra", "Hubo un gran chasco porque Jesús no vino", "Se purificó el santuario terrenal"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 2,
+                texto: "¿Quién recibió la visión del santuario celestial el 23 de octubre de 1844?",
+                respuestas: ["Guillermo Miller", "Hiram Edson", "Elena White"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 2,
+                texto: "¿Qué vio Hiram Edson en su visión mientras atravesaba un campo de maíz?",
+                respuestas: ["Ángeles cantando", "Cristo pasando del Lugar Santo al Lugar Santísimo", "El cielo abierto con fuego"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 2,
+                texto: "¿Qué evento comenzó el 22 de octubre de 1844 según la visión de Edson?",
+                respuestas: ["El fin del mundo", "El juicio investigador en el santuario celestial", "La segunda venida de Cristo"],
+                correcta: 1
+            });
+
+            // NIVEL 3: Doctrinas Fundamentales y Organización
+            preguntas.push({
+                nivel: 3,
+                texto: "¿Quién recibió el don de profecía después del Gran Chasco?",
+                respuestas: ["Raquel Oakes", "Elena Gould Harmon", "María Williams"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 3,
+                texto: "¿Cuándo se casó Elena Harmon con James White?",
+                respuestas: ["1844", "30 de agosto de 1846", "1850"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 3,
+                texto: "¿Quiénes fueron clave en el descubrimiento de la observancia del sábado?",
+                respuestas: ["Raquel Oakes, Frederick Wheeler, Thomas Preble, José Bates y John N. Andrews", "Guillermo Miller y Hiram Edson", "Elena y James White solamente"],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 3,
+                texto: "¿Cuándo se celebraron los primeros congresos sobre el sábado?",
+                respuestas: ["1844", "1848", "1850"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 3,
+                texto: "¿Qué enseñanza sobre los muertos sostuvo George Storrs?",
+                respuestas: ["Los muertos duermen hasta la resurrección", "Los muertos van al cielo o infierno inmediatamente", "Los muertos se reencarnan"],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 3,
+                texto: "¿Cuándo se organizó oficialmente la Iglesia Adventista del Séptimo Día?",
+                respuestas: ["21 de mayo de 1863", "22 de octubre de 1844", "17 de agosto de 1844"],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 3,
+                texto: "¿Cuándo tuvo Elena White la visión sobre la Reforma Pro-Salud?",
+                respuestas: ["5 de junio de 1863 (15 días después de la organización)", "22 de octubre de 1844", "1876"],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 3,
+                texto: "¿Cuál fue el primer sanatorio adventista?",
+                respuestas: ["Loma Linda", "Instituto Occidental de Reforma Pro-Salud (luego Sanatorio de Battle Creek)", "Sanatorio de Dinamarca"],
+                correcta: 1
+            });
+
+            // NIVEL 4: Expansión Misionera y División Interamericana
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Quién fue el primer misionero adventista enviado oficialmente al extranjero?",
+                respuestas: ["Michael Czechowski", "John N. Andrews (a Suiza en 1874)", "William Ings (a Inglaterra)"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿En qué congreso se definieron las doctrinas fundamentales de la iglesia en 1888?",
+                respuestas: ["Congreso de Minneapolis", "Congreso de Indianápolis", "Congreso de Battle Creek"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Qué mensaje bíblico impulsó la expansión misionera después del chasco?",
+                respuestas: ["El mensaje de los 3 ángeles de Apocalipsis 14", "La Gran Comisión de Mateo 28", "El sermón del monte"],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Cuándo se organizó la División Interamericana?",
+                respuestas: ["1903", "1914", "1922"],
+                correcta: 2
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Dónde estuvo inicialmente la sede de la División Interamericana?",
+                respuestas: ["Coral Gables, Florida", "Balboa, Zona del Canal, Panamá", "La Habana, Cuba"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Cuántos miembros tenía la División Interamericana al organizarse en 1922?",
+                respuestas: ["7,500 miembros", "50,000 miembros", "100,000 miembros"],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿En qué año se convirtió la División Interamericana en la mayor del mundo en miembros bautizados?",
+                respuestas: ["1977", "1980", "2000"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Cuántas uniones componen actualmente la División Interamericana?",
+                respuestas: ["15 uniones", "20 uniones", "22 uniones"],
+                correcta: 2
+            });
+
+            // NIVEL 5: Misión Dominicana y Organización Local
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Quién fue el primer colportor adventista en la República Dominicana?",
+                respuestas: ["Charles Moulton", "H.D. Casebeer", "Williams Steele"],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿En qué año llegó Charles Moulton a República Dominicana?",
+                respuestas: ["1907", "1917", "1924"],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Dónde se organizó la primera Escuela Sabática en República Dominicana?",
+                respuestas: ["Santo Domingo", "Central Consuelo", "Jábaba, Moca"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Cuándo se organizó la primera iglesia adventista en República Dominicana?",
+                respuestas: ["1907", "1917", "1924"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Cuándo se organizó oficialmente la Misión Dominicana?",
+                respuestas: ["1 de enero de 1924", "15 de enero de 1994", "1 de agosto de 1963"],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Cuántos miembros y iglesias tenía la Misión Dominicana al organizarse en 1924?",
+                respuestas: ["147 miembros y 2 iglesias", "743 miembros y 10 iglesias", "4,000 miembros y 4 iglesias"],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Cuándo se convirtió la Misión Central Dominicana en Asociación?",
+                respuestas: ["1 de enero de 1924", "1 de agosto de 1963", "1972"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Cuándo se organizó la Unión Dominicana?",
+                respuestas: ["1924", "1963", "15 de enero de 1994"],
+                correcta: 2
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Cuántas iglesias y miembros tenía la Unión Dominicana al organizarse en 1994?",
+                respuestas: ["322 iglesias y 87,486 miembros", "2,000 iglesias y 2,000,000 miembros", "9,918 iglesias y 3,000,000 miembros"],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Qué dice Amos 3:7 sobre los secretos de Dios?",
+                respuestas: ["Dios no revela sus secretos a nadie", "Dios revela sus secretos a sus siervos los profetas", "Solo los ángeles conocen los secretos de Dios"],
+                correcta: 1
+            });
+        }
+
+        // Iniciar juego
+        function iniciarJuego() {
+            cargarPreguntas();
+            nivelActual = 1;
+            preguntaActual = 0;
+            puntos = 0;
+            vidas = 3;
+            
+            // Ocultar pantalla de inicio
+            document.getElementById('inicio').style.display = 'none';
+            
+            // Mostrar elementos del juego
+            document.getElementById('barra-superior').style.display = 'flex';
+            document.getElementById('nivel-container').style.display = 'block';
+            document.getElementById('pregunta-container').style.display = 'block';
+            document.getElementById('progreso-container').style.display = 'block';
+            document.getElementById('botones-container').style.display = 'flex';
+            
+            // Actualizar UI
+            mostrarNivel();
+            mostrarPregunta();
+            actualizarUI();
+        }
+
+        // Mostrar nivel
+        function mostrarNivel() {
+            const nivelTitulo = document.getElementById('nivel-titulo');
+            const nivelDescripcion = document.getElementById('nivel-descripcion');
+            const nivelContainer = document.getElementById('nivel-container');
+
+            switch(nivelActual) {
+                case 1:
+                    nivelTitulo.textContent = "NIVEL 1: La Profecía de los 2,300 Días";
+                    nivelDescripcion.textContent = "Daniel 8:14 - El tiempo profético";
+                    nivelContainer.style.background = "linear-gradient(to right, #3498DB, #2980B9)";
+                    break;
+                case 2:
+                    nivelTitulo.textContent = "NIVEL 2: El Gran Chasco y el Santuario";
+                    nivelDescripcion.textContent = "22 de octubre de 1844 - La revelación celestial";
+                    nivelContainer.style.background = "linear-gradient(to right, #9B59B6, #8E44AD)";
+                    break;
+                case 3:
+                    nivelTitulo.textContent = "NIVEL 3: Doctrinas y Organización";
+                    nivelDescripcion.textContent = "Sábado, salud y estructura de la iglesia";
+                    nivelContainer.style.background = "linear-gradient(to right, #27AE60, #219653)";
+                    break;
+                case 4:
+                    nivelTitulo.textContent = "NIVEL 4: Expansión Global";
+                    nivelDescripcion.textContent = "Misiones y la División Interamericana";
+                    nivelContainer.style.background = "linear-gradient(to right, #F39C12, #E67E22)";
+                    break;
+                case 5:
+                    nivelTitulo.textContent = "NIVEL 5: Misión Dominicana";
+                    nivelDescripcion.textContent = "Historia de la obra en República Dominicana";
+                    nivelContainer.style.background = "linear-gradient(to right, #E74C3C, #C0392B)";
+                    break;
+            }
+        }
+
+        // Mostrar pregunta
+        function mostrarPregunta() {
+            const preguntasNivel = preguntas.filter(p => p.nivel === nivelActual);
+            
+            if (preguntaActual >= preguntasNivel.length) {
+                // Completar nivel
+                mostrarModalNivel();
+                return;
+            }
+            
+            const pregunta = preguntasNivel[preguntaActual];
+            document.getElementById('pregunta-texto').textContent = pregunta.texto;
+            
+            // Mezclar respuestas
+            const respuestasMezcladas = [...Array(pregunta.respuestas.length).keys()].sort(() => Math.random() - 0.5);
+            
+            const botonesRespuesta = document.querySelectorAll('.btn-respuesta');
+            botonesRespuesta.forEach((btn, index) => {
+                if (index < pregunta.respuestas.length) {
+                    btn.textContent = pregunta.respuestas[respuestasMezcladas[index]];
+                    btn.className = 'btn-respuesta';
+                    btn.dataset.indiceOriginal = respuestasMezcladas[index];
+                    btn.style.display = 'block';
+                } else {
+                    btn.style.display = 'none';
+                }
+            });
+            
+            // Guardar respuesta correcta
+            respuestaCorrectaIndex = respuestasMezcladas.indexOf(pregunta.correcta);
+            
+            // Actualizar progreso
+            document.getElementById('pregunta-actual').textContent = preguntaActual + 1;
+            document.getElementById('total-preguntas').textContent = preguntasNivel.length;
+        }
+
+        // Responder pregunta
+        function responder(indice) {
+            const botonesRespuesta = document.querySelectorAll('.btn-respuesta');
+            
+            // Desactivar todos los botones temporalmente
+            botonesRespuesta.forEach(btn => {
+                if (btn.style.display !== 'none') {
+                    btn.disabled = true;
+                }
+            });
+            
+            // Verificar respuesta
+            if (indice === respuestaCorrectaIndex) {
+                // Respuesta correcta
+                puntos += 100;
+                preguntaActual++;
+                
+                // Marcar como correcta
+                botonesRespuesta[indice].classList.add('correcta');
+                
+                // Alerta de correcto
+                setTimeout(() => {
+                    alert('¡Correcto! 📜\n+100 puntos');
+                    botonesRespuesta.forEach(btn => {
+                        btn.disabled = false;
+                        btn.className = 'btn-respuesta';
+                    });
+                    mostrarPregunta();
+                    actualizarUI();
+                }, 500);
+            } else {
+                // Respuesta incorrecta
+                vidas--;
+                
+                // Marcar como incorrecta
+                botonesRespuesta[indice].classList.add('incorrecta');
+                botonesRespuesta[respuestaCorrectaIndex].classList.add('correcta');
+                
+                // Alerta de incorrecto
+                setTimeout(() => {
+                    alert('¡Incorrecto! 😔\n-1 vida');
+                    botonesRespuesta.forEach(btn => {
+                        btn.disabled = false;
+                        btn.className = 'btn-respuesta';
+                    });
+                    
+                    if (vidas <= 0) {
+                        mostrarDerrota();
+                    } else {
+                        mostrarPregunta();
+                        actualizarUI();
+                    }
+                }, 500);
+            }
+        }
+
+        // Actualizar UI
+        function actualizarUI() {
+            document.getElementById('puntos').textContent = `⭐ Puntos: ${puntos}`;
+            document.getElementById('vidas').textContent = `❤️ Vidas: ${vidas}`;
+        }
+
+        // Mostrar modal de nivel completado
+        function mostrarModalNivel() {
+            nivelActual++;
+            
+            if (nivelActual > 5) {
+                mostrarVictoria();
+                return;
+            }
+            
+            document.getElementById('nivel-completado-texto').textContent = `¡Has completado el Nivel ${nivelActual - 1}!`;
+            document.getElementById('puntos-nivel').textContent = puntos;
+            document.getElementById('modal-nivel').style.display = 'flex';
+        }
+
+        // Cerrar modal
+        function cerrarModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            
+            if (modalId === 'modal-nivel') {
+                mostrarNivel();
+                mostrarPregunta();
+            }
+        }
+
+        // Mostrar victoria
+        function mostrarVictoria() {
+            document.getElementById('puntos-final').textContent = puntos;
+            document.getElementById('modal-victoria').style.display = 'flex';
+            
+            // Mostrar pergaminos volando
+            mostrarPergaminos();
+        }
+
+        // Mostrar derrota
+        function mostrarDerrota() {
+            document.getElementById('puntos-derrota').textContent = puntos;
+            document.getElementById('modal-derrota').style.display = 'flex';
+        }
+
+        // Reiniciar juego
+        function reiniciarJuego() {
+            cerrarModal('modal-victoria');
+            cerrarModal('modal-derrota');
+            cerrarModal('modal-nivel');
+            document.getElementById('pergaminos').style.display = 'none';
+            
+            // Reiniciar variables
+            nivelActual = 1;
+            preguntaActual = 0;
+            puntos = 0;
+            vidas = 3;
+            
+            // Ocultar elementos del juego
+            document.getElementById('barra-superior').style.display = 'none';
+            document.getElementById('nivel-container').style.display = 'none';
+            document.getElementById('pregunta-container').style.display = 'none';
+            document.getElementById('progreso-container').style.display = 'none';
+            document.getElementById('botones-container').style.display = 'none';
+            
+            // Mostrar pantalla de inicio
+            document.getElementById('inicio').style.display = 'block';
+        }
+
+        // Usar pista
+        function usarPista() {
+            if (puntos >= 50) {
+                puntos -= 50;
+                const pregunta = preguntas.filter(p => p.nivel === nivelActual)[preguntaActual];
+                alert(`💡 PISTA:\nLa respuesta correcta contiene la palabra: "${pregunta.respuestas[pregunta.correcta].split(' ')[0]}"`);
+                actualizarUI();
+            } else {
+                alert('¡Necesitas al menos 50 puntos para usar una pista!');
+            }
+        }
+
+        // Salir del juego
+        function salirJuego() {
+            if (confirm('¿Estás seguro de que quieres salir de la aventura profética?')) {
+                reiniciarJuego();
+            }
+        }
+
+        // Pergaminos volando (simulación de secretos revelados)
+        function mostrarPergaminos() {
+            const contenedor = document.getElementById('pergaminos');
+            contenedor.style.display = 'block';
+            
+            // Crear 20 pergaminos volando
+            for (let i = 0; i < 20; i++) {
+                const pergamino = document.createElement('div');
+                pergamino.className = 'pergamino';
+                
+                // Textos proféticos aleatorios
+                const textos = ["2300", "1844", "Sábado", "Santuario", "Juicio", "22 Oct", "Amos 3:7", "Apoc 14", "Misión", "Dios"];
+                pergamino.textContent = textos[Math.floor(Math.random() * textos.length)];
+                
+                // Posicionar aleatoriamente en la parte superior
+                const top = Math.random() * 30;
+                const delay = Math.random() * 2;
+                
+                pergamino.style.top = `${top}%`;
+                pergamino.style.left = '-100px';
+                pergamino.style.animationDelay = `${delay}s`;
+                pergamino.style.animationDuration = `${3 + Math.random() * 2}s`;
+                
+                contenedor.appendChild(pergamino);
+                
+                // Eliminar el pergamino después de la animación
+                setTimeout(() => {
+                    pergamino.remove();
+                }, 5000);
+            }
+            
+            // Ocultar contenedor después de 6 segundos
+            setTimeout(() => {
+                contenedor.style.display = 'none';
+                contenedor.innerHTML = '';
+            }, 6000);
+        }
+
+        // Volver al inicio
+        function volverInicio() {
+            window.location.href = '../index.html';
+        }
+    </script>
+</body>
+</html>

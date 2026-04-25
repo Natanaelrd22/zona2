@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" "width=device-width, initial-scale=1.0">
+    <title>🌍 Cómo se Esparció el Mensaje Adventista 🌍</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #0d47a1 0%, #1976d2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #juego-container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Pantalla de inicio */
+        #inicio {
+            padding: 40px;
+            text-align: center;
+            background: linear-gradient(to bottom, #0a2463, #0d47a1);
+            color: white;
+        }
+
+        #inicio h1 {
+            font-size: 2.3em;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        #inicio p {
+            font-size: 1.2em;
+            margin: 15px 0;
+            line-height: 1.6;
+        }
+
+        .btn-iniciar {
+            background: linear-gradient(to right, #FF6B6B, #EE5A24);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.3em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+        }
+
+        .btn-iniciar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-iniciar:active {
+            transform: scale(0.98);
+        }
+
+        /* Barra superior */
+        #barra-superior {
+            background: #2C3E50;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        #puntos {
+            background: linear-gradient(to right, #FFD700, #FFA500);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 1.1em;
+            color: #8B4513;
+        }
+
+        #vidas {
+            background: linear-gradient(to right, #E74C3C, #C0392B);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 1.1em;
+        }
+
+        /* Nivel actual */
+        #nivel-container {
+            padding: 20px 30px;
+            text-align: center;
+            background: linear-gradient(to right, #3498DB, #2980B9);
+            color: white;
+        }
+
+        #nivel-titulo {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+
+        #nivel-descripcion {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        /* Pregunta */
+        #pregunta-container {
+            padding: 30px;
+            text-align: center;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        #pregunta-texto {
+            font-size: 1.6em;
+            color: #2C3E50;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        /* Respuestas */
+        #respuestas-container {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-respuesta {
+            background: linear-gradient(to right, #F9F9F9, #E0E0E0);
+            border: 3px solid #3498DB;
+            border-radius: 15px;
+            padding: 15px 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            font-weight: bold;
+            color: #2C3E50;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-respuesta:hover {
+            background: linear-gradient(to right, #E3F2FD, #BBDEFB);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-respuesta:active {
+            transform: translateY(1px);
+        }
+
+        .btn-respuesta.correcta {
+            background: linear-gradient(to right, #D4EDDA, #28A745);
+            border-color: #28A745;
+            color: white;
+            animation: bounce 0.5s;
+        }
+
+        .btn-respuesta.incorrecta {
+            background: linear-gradient(to right, #F8D7DA, #DC3545);
+            border-color: #DC3545;
+            color: white;
+            animation: shake 0.5s;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        /* Progreso */
+        #progreso-container {
+            padding: 15px 30px;
+            background: #ECF0F1;
+            text-align: center;
+            font-weight: bold;
+            color: #2C3E50;
+        }
+
+        /* Botones inferiores */
+        #botones-container {
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            background: #F8F9FA;
+            border-top: 2px solid #ECF0F1;
+        }
+
+        .btn-pista {
+            background: linear-gradient(to right, #FFF3CD, #FFC107);
+            color: #856404;
+            border: 2px solid #FFC107;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-pista:hover {
+            background: linear-gradient(to right, #FFEAA7, #FFB74D);
+            transform: scale(1.05);
+        }
+
+        .btn-salir {
+            background: linear-gradient(to right, #F8D7DA, #DC3545);
+            color: #721C24;
+            border: 2px solid #DC3545;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-salir:hover {
+            background: linear-gradient(to right, #F5C6CB, #C82333);
+            transform: scale(1.05);
+        }
+
+        .btn-inicio {
+            background: linear-gradient(to right, #4CAF50, #2E7D32);
+            color: white;
+            border: 2px solid #4CAF50;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-inicio:hover {
+            background: linear-gradient(to right, #66BB6A, #43A047);
+            transform: scale(1.05);
+        }
+
+        /* Pantallas modales */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: slideIn 0.5s;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal h2 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            color: #2C3E50;
+        }
+
+        .modal p {
+            font-size: 1.3em;
+            margin: 15px 0;
+            line-height: 1.6;
+        }
+
+        .btn-modal {
+            background: linear-gradient(to right, #3498DB, #2980B9);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-modal:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-modal.victoria {
+            background: linear-gradient(to right, #28A745, #20C997);
+        }
+
+        .btn-modal.derrota {
+            background: linear-gradient(to right, #DC3545, #C82333);
+        }
+
+        /* Efectos de transición */
+        .fade-in {
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            #inicio h1 {
+                font-size: 1.8em;
+            }
+            
+            #pregunta-texto {
+                font-size: 1.3em;
+            }
+            
+            .btn-respuesta {
+                font-size: 1em;
+                padding: 12px 15px;
+            }
+            
+            .btn-iniciar {
+                padding: 12px 30px;
+                font-size: 1.1em;
+            }
+        }
+
+        /* Insignias */
+        .insignia {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            margin: 5px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FF6B6B, #EE5A24);
+            color: white;
+            font-weight: bold;
+            line-height: 60px;
+            font-size: 1.2em;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Animación de luz esparciéndose */
+        #luz {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            display: none;
+        }
+
+        .rayo {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: expand 3s forwards;
+        }
+
+        @keyframes expand {
+            0% { transform: scale(0); opacity: 0.8; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div id="juego-container">
+        <!-- Pantalla de inicio -->
+        <div id="inicio">
+            <h1>✨ ¿CÓMO SE ESPARCIO EL MENSAJE? ✨</h1>
+            <p>¡Hola, joven misionero! 🌏</p>
+            <p>Descubre cómo el mensaje adventista viajó desde Estados Unidos hasta los rincones más remotos del mundo.</p>
+            <p>Conoce a valientes misioneros que cruzaron océanos, montañas y selvas para llevar la esperanza a millones.</p>
+            <p>¿Estás listo para viajar por el mundo con el mensaje de Jesús? ✈️⛵</p>
+            <button class="btn-iniciar" onclick="iniciarJuego()">🎮 ¡EMPEZAR VIAJE!</button>
+        </div>
+
+        <!-- Barra superior -->
+        <div id="barra-superior" style="display: none;">
+            <div id="puntos">⭐ Puntos: 0</div>
+            <div id="vidas">❤️ Vidas: 3</div>
+        </div>
+
+        <!-- Nivel actual -->
+        <div id="nivel-container" style="display: none;">
+            <div id="nivel-titulo">NIVEL 1: Primeros pasos en Europa</div>
+            <div id="nivel-descripcion">Italia, Suiza y los valles valdenses</div>
+        </div>
+
+        <!-- Pregunta -->
+        <div id="pregunta-container" style="display: none;">
+            <div id="pregunta-texto">¿Quién fue el primer misionero adventista "no oficial"?</div>
+            <div id="respuestas-container">
+                <button class="btn-respuesta" onclick="responder(0)">J.N. Andrews</button>
+                <button class="btn-respuesta" onclick="responder(1)">Michael Czechowski</button>
+                <button class="btn-respuesta" onclick="responder(2)">James Erzberger</button>
+            </div>
+        </div>
+
+        <!-- Progreso -->
+        <div id="progreso-container" style="display: none;">
+            Pregunta <span id="pregunta-actual">1</span> de <span id="total-preguntas">7</span>
+        </div>
+
+        <!-- Botones inferiores -->
+        <div id="botones-container" style="display: none;">
+            <button class="btn-pista" onclick="usarPista()">💡 Pista (-50 puntos)</button>
+            <button class="btn-salir" onclick="salirJuego()">🚪 Salir</button>
+            <button class="btn-inicio" onclick="volverInicio()">🏠 Volver al Inicio</button>
+        </div>
+    </div>
+
+    <!-- Modal Victoria -->
+    <div id="modal-victoria" class="modal">
+        <div class="modal-content">
+            <h2>🏆 ¡MISIÓN CUMPLIDA! 🏆</h2>
+            <p>¡Has completado el viaje mundial!</p>
+            <p>----------</p>
+            <p><strong>Puntos totales:</strong> <span id="puntos-final">0</span></p>
+            <p>----------</p>
+            <p>¡Eres un verdadero misionero global! ✨</p>
+            <div style="margin-top: 20px;">
+                <div style="margin: 15px 0;">
+                    <span class="insignia">🌍</span>
+                    <span class="insignia">⛵</span>
+                    <span class="insignia">✈️</span>
+                    <span class="insignia">📖</span>
+                    <span class="insignia">❤️</span>
+                </div>
+                <p>Todas las insignias misioneras desbloqueadas</p>
+            </div>
+            <button class="btn-modal victoria" onclick="reiniciarJuego()">🔄 ¡Nuevo viaje!</button>
+            <button class="btn-modal" onclick="cerrarModal('modal-victoria')">❌ Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Modal Derrota -->
+    <div id="modal-derrota" class="modal">
+        <div class="modal-content">
+            <h2>😢 ¡VIAJE INTERRUMPIDO! 😢</h2>
+            <p>Has perdido todas tus vidas.</p>
+            <p>----------</p>
+            <p><strong>Puntos finales:</strong> <span id="puntos-derrota">0</span></p>
+            <p>----------</p>
+            <p>¡No te rindas! Inténtalo de nuevo. 💪</p>
+            <button class="btn-modal derrota" onclick="reiniciarJuego()">🔄 ¡Intentar de nuevo!</button>
+            <button class="btn-modal" onclick="cerrarModal('modal-derrota')">❌ Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Modal Nivel Completado -->
+    <div id="modal-nivel" class="modal">
+        <div class="modal-content">
+            <h2>🎉 ¡NIVEL COMPLETADO! 🎉</h2>
+            <p id="nivel-completado-texto">¡Excelente trabajo, viajero!</p>
+            <p>----------</p>
+            <p><strong>Puntos actuales:</strong> <span id="puntos-nivel">0</span></p>
+            <button class="btn-modal" onclick="cerrarModal('modal-nivel')">➡️ ¡Siguiente destino!</button>
+        </div>
+    </div>
+
+    <!-- Luz esparciéndose -->
+    <div id="luz"></div>
+
+    <script>
+        // Variables del juego
+        let nivelActual = 1;
+        let preguntaActual = 0;
+        let puntos = 0;
+        let vidas = 3;
+        let preguntas = [];
+        let respuestaCorrectaIndex = 0;
+
+        // Cargar preguntas
+        function cargarPreguntas() {
+            // NIVEL 1: Primeros pasos en Europa
+            preguntas.push({
+                nivel: 1,
+                texto: "¿Quién fue el primer misionero adventista 'no oficial'?",
+                respuestas: ["J.N. Andrews", "Michael Czechowski", "James Erzberger"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 1,
+                texto: "¿Dónde organizó Michael Czechowski un grupo de observadores del sábado en Italia?",
+                respuestas: ["Roma", "Milán", "Torre Pellice (valle de los valdenses)"],
+                correcta: 2
+            });
+
+            preguntas.push({
+                nivel: 1,
+                texto: "¿A qué país fue Czechowski después de Italia?",
+                respuestas: ["Francia", "Alemania", "Suiza"],
+                correcta: 2
+            });
+
+            preguntas.push({
+                nivel: 1,
+                texto: "¿Qué joven suizo fue enviado a EE.UU. para estudiar el mensaje adventista?",
+                respuestas: ["James Erzberger", "Daniel Bourdeau", "John Andrews"],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 1,
+                texto: "¿En qué ciudad suiza comenzó Czechowski una congregación?",
+                respuestas: ["Ginebra", "Zúrich", "Tramelan"],
+                correcta: 2
+            });
+
+            preguntas.push({
+                nivel: 1,
+                texto: "¿Qué vio Elena White en visión sobre cómo se esparciría el mensaje?",
+                respuestas: ["Como ríos de agua", "Como corrientes de una clara luz alrededor del mundo", "Como semillas al viento"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 1,
+                texto: "¿Qué exhortaba Elena White a los creyentes en la década de 1850?",
+                respuestas: ["A construir más iglesias", "A expandir su visión y enviar misioneros al extranjero", "A estudiar más las profecías"],
+                correcta: 1
+            });
+
+            // NIVEL 2: J.N. Andrews y expansión europea
+            preguntas.push({
+                nivel: 2,
+                texto: "¿En qué año fue enviado oficialmente J.N. Andrews como misionero a Suiza?",
+                respuestas: ["1870", "1874", "1880"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 2,
+                texto: "¿Quiénes acompañaron a J.N. Andrews en su viaje a Suiza?",
+                respuestas: ["Su esposa y sus hijos", "Solo sus hijos Charles y Mary", "Un grupo de 10 misioneros"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 2,
+                texto: "¿Cuántas pequeñas iglesias adventistas había en Suiza cuando llegó Andrews?",
+                respuestas: ["3", "6", "10"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 2,
+                texto: "¿Qué revista empezó a publicar Andrews en francés en 1876?",
+                respuestas: ["La Verdad Presente", "Señales de los Tiempos (Signs of the Times)", "El Mensajero"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 2,
+                texto: "¿Quién fue enviado para ayudar a establecer la obra en Francia e Italia?",
+                respuestas: ["Daniel Bourdeau", "James Erzberger", "John Matteson"],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 2,
+                texto: "¿Dónde se estableció la planta impresora y oficinas para Europa?",
+                respuestas: ["Ginebra", "Zúrich", "Basilea (frontera Suiza-Francia-Alemania)"],
+                correcta: 2
+            });
+
+            preguntas.push({
+                nivel: 2,
+                texto: "¿Dónde murió J.N. Andrews en 1883?",
+                respuestas: ["Estados Unidos", "Suiza (Basilea)", "Italia"],
+                correcta: 1
+            });
+
+            // NIVEL 3: Australia y el Pacífico Sur
+            preguntas.push({
+                nivel: 3,
+                texto: "¿En qué año fue Elena White a Europa para ayudar a establecer la obra?",
+                respuestas: ["1875", "1885", "1890"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 3,
+                texto: "¿Qué lugares visitó Elena White en Europa?",
+                respuestas: ["Solo Suiza", "Basilea, Inglaterra, Alemania, Francia, Italia y Escandinavia", "Solo Italia y Francia"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 3,
+                texto: "¿Por qué le resultó de interés especial a Elena White el valle de los valdenses?",
+                respuestas: ["Por su belleza natural", "Reconoció lugares mostrados en sus visiones sobre la Edad Media", "Por la comida local"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 3,
+                texto: "¿Quién fue el primer misionero adventista enviado a Inglaterra?",
+                respuestas: ["J.N. Loughborough", "William Ings", "John Matteson"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 3,
+                texto: "¿En qué año llegó William Ings a Inglaterra?",
+                respuestas: ["1874", "1878", "1880"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 3,
+                texto: "¿Quién fue enviado a Australia en 1884 como resultado de una visión de Elena White?",
+                respuestas: ["Stephen Haskell", "John Corliss", "William Arnold"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 3,
+                texto: "¿Dónde se organizó la primera iglesia adventista en Australia?",
+                respuestas: ["Sídney", "Melbourne (North Fitzroy)", "Brisbane"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 3,
+                texto: "¿Cuál fue la primera iglesia adventista en el hemisferio sur?",
+                respuestas: ["En Melbourne", "En Auckland (Ponsonby)", "En Sídney"],
+                correcta: 1
+            });
+
+            // NIVEL 4: África, Asia y el Pacífico
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Qué joven fue sanado mediante oración en África y pidió un pastor?",
+                respuestas: ["John Robinson", "Peter Wessels", "Gerhardt Perk"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿En qué año llegaron los primeros misioneros adventistas a Cape Town, Sudáfrica?",
+                respuestas: ["1880", "1887", "1890"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Dónde se estableció la primera estación misionera adventista entre no cristianos en África?",
+                respuestas: ["Cape Town", "Solusi (actual Zimbabue)", "Johannesburgo"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Quién fue el primer misionero voluntario a Hong Kong?",
+                respuestas: ["R.S. Anthony", "Abram La Rué", "Baharían"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Qué isla del Pacífico fue visitada por John Tay en 1886?",
+                respuestas: ["Fiji", "Tonga", "Pitcairn"],
+                correcta: 2
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Qué barco misionero fue fabricado en 1890 con ofrendas de Escuela Sabática?",
+                respuestas: ["El Mensajero", "El Adventista", "Pitcairn"],
+                correcta: 2
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Quién es conocido como 'el apóstol adventista a Fiji'?",
+                respuestas: ["John Tay", "James Fulton", "G.F. Jones"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Qué revista mensual publicó James Fulton en Fiji?",
+                respuestas: ["El Mensajero", "Ramara (que significa 'luz')", "La Verdad"],
+                correcta: 1
+            });
+
+            // NIVEL 5: Organización global y misión actual
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Dónde se fundó el Colegio de Avondale en Australia?",
+                respuestas: ["Melbourne", "Sídney", "Cooranbong"],
+                correcta: 2
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Qué vio Elena White en visión que confirmó el lugar para el colegio en Australia?",
+                respuestas: ["Un edificio terminado", "Un surco arado en la tierra", "Un árbol fructífero"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Cuándo se organizó la División Interamericana?",
+                respuestas: ["1922", "1950", "1982"],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Dónde estuvo inicialmente la sede de la División Interamericana?",
+                respuestas: ["Coral Gables, Florida", "Balboa, Zona del Canal, Panamá", "La Habana, Cuba"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Cuántas uniones componen la División Interamericana (según el texto)?",
+                respuestas: ["10", "15", "20"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Cuántos miembros bautizados tenía la División Interamericana en 1987?",
+                respuestas: ["600,000", "1 millón", "2 millones"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Qué tipo de instituciones tiene la iglesia para preparar misioneros médicos?",
+                respuestas: ["Solo hospitales", "Solo universidades", "Más de 100 hospitales y universidades"],
+                correcta: 2
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Cuál es nuestra misión según el texto?",
+                respuestas: ["Solo predicar en otros países", "Ser misioneros donde estamos: con amigos y vecinos", "Solo construir iglesias"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Qué mensaje debemos contar a la gente según el texto?",
+                respuestas: ["Solo sobre el sábado", "Que Dios los ama, Jesús murió por nosotros y vendrá pronto", "Solo sobre la salud"],
+                correcta: 1
+            });
+        }
+
+        // Iniciar juego
+        function iniciarJuego() {
+            cargarPreguntas();
+            nivelActual = 1;
+            preguntaActual = 0;
+            puntos = 0;
+            vidas = 3;
+            
+            // Ocultar pantalla de inicio
+            document.getElementById('inicio').style.display = 'none';
+            
+            // Mostrar elementos del juego
+            document.getElementById('barra-superior').style.display = 'flex';
+            document.getElementById('nivel-container').style.display = 'block';
+            document.getElementById('pregunta-container').style.display = 'block';
+            document.getElementById('progreso-container').style.display = 'block';
+            document.getElementById('botones-container').style.display = 'flex';
+            
+            // Actualizar UI
+            mostrarNivel();
+            mostrarPregunta();
+            actualizarUI();
+        }
+
+        // Mostrar nivel
+        function mostrarNivel() {
+            const nivelTitulo = document.getElementById('nivel-titulo');
+            const nivelDescripcion = document.getElementById('nivel-descripcion');
+            const nivelContainer = document.getElementById('nivel-container');
+
+            switch(nivelActual) {
+                case 1:
+                    nivelTitulo.textContent = "NIVEL 1: Primeros pasos en Europa";
+                    nivelDescripcion.textContent = "Italia, Suiza y los valles valdenses";
+                    nivelContainer.style.background = "linear-gradient(to right, #3498DB, #2980B9)";
+                    break;
+                case 2:
+                    nivelTitulo.textContent = "NIVEL 2: J.N. Andrews en Europa";
+                    nivelDescripcion.textContent = "Expansión por el continente europeo";
+                    nivelContainer.style.background = "linear-gradient(to right, #9B59B6, #8E44AD)";
+                    break;
+                case 3:
+                    nivelTitulo.textContent = "NIVEL 3: Australia y el Pacífico";
+                    nivelDescripcion.textContent = "El mensaje cruza los océanos";
+                    nivelContainer.style.background = "linear-gradient(to right, #27AE60, #219653)";
+                    break;
+                case 4:
+                    nivelTitulo.textContent = "NIVEL 4: África y Asia";
+                    nivelDescripcion.textContent = "Hasta los rincones más remotos";
+                    nivelContainer.style.background = "linear-gradient(to right, #F39C12, #E67E22)";
+                    break;
+                case 5:
+                    nivelTitulo.textContent = "NIVEL 5: ¡El mundo entero!";
+                    nivelDescripcion.textContent = "Organización global y misión actual";
+                    nivelContainer.style.background = "linear-gradient(to right, #E74C3C, #C0392B)";
+                    break;
+            }
+        }
+
+        // Mostrar pregunta
+        function mostrarPregunta() {
+            const preguntasNivel = preguntas.filter(p => p.nivel === nivelActual);
+            
+            if (preguntaActual >= preguntasNivel.length) {
+                // Completar nivel
+                mostrarModalNivel();
+                return;
+            }
+            
+            const pregunta = preguntasNivel[preguntaActual];
+            document.getElementById('pregunta-texto').textContent = pregunta.texto;
+            
+            // Mezclar respuestas
+            const respuestasMezcladas = [...Array(pregunta.respuestas.length).keys()].sort(() => Math.random() - 0.5);
+            
+            const botonesRespuesta = document.querySelectorAll('.btn-respuesta');
+            botonesRespuesta.forEach((btn, index) => {
+                if (index < pregunta.respuestas.length) {
+                    btn.textContent = pregunta.respuestas[respuestasMezcladas[index]];
+                    btn.className = 'btn-respuesta';
+                    btn.dataset.indiceOriginal = respuestasMezcladas[index];
+                    btn.style.display = 'block';
+                } else {
+                    btn.style.display = 'none';
+                }
+            });
+            
+            // Guardar respuesta correcta
+            respuestaCorrectaIndex = respuestasMezcladas.indexOf(pregunta.correcta);
+            
+            // Actualizar progreso
+            document.getElementById('pregunta-actual').textContent = preguntaActual + 1;
+            document.getElementById('total-preguntas').textContent = preguntasNivel.length;
+        }
+
+        // Responder pregunta
+        function responder(indice) {
+            const botonesRespuesta = document.querySelectorAll('.btn-respuesta');
+            
+            // Desactivar todos los botones temporalmente
+            botonesRespuesta.forEach(btn => {
+                if (btn.style.display !== 'none') {
+                    btn.disabled = true;
+                }
+            });
+            
+            // Verificar respuesta
+            if (indice === respuestaCorrectaIndex) {
+                // Respuesta correcta
+                puntos += 100;
+                preguntaActual++;
+                
+                // Marcar como correcta
+                botonesRespuesta[indice].classList.add('correcta');
+                
+                // Alerta de correcto
+                setTimeout(() => {
+                    alert('¡Correcto! ✨\n+100 puntos');
+                    botonesRespuesta.forEach(btn => {
+                        btn.disabled = false;
+                        btn.className = 'btn-respuesta';
+                    });
+                    mostrarPregunta();
+                    actualizarUI();
+                }, 500);
+            } else {
+                // Respuesta incorrecta
+                vidas--;
+                
+                // Marcar como incorrecta
+                botonesRespuesta[indice].classList.add('incorrecta');
+                botonesRespuesta[respuestaCorrectaIndex].classList.add('correcta');
+                
+                // Alerta de incorrecto
+                setTimeout(() => {
+                    alert('¡Incorrecto! 😔\n-1 vida');
+                    botonesRespuesta.forEach(btn => {
+                        btn.disabled = false;
+                        btn.className = 'btn-respuesta';
+                    });
+                    
+                    if (vidas <= 0) {
+                        mostrarDerrota();
+                    } else {
+                        mostrarPregunta();
+                        actualizarUI();
+                    }
+                }, 500);
+            }
+        }
+
+        // Actualizar UI
+        function actualizarUI() {
+            document.getElementById('puntos').textContent = `⭐ Puntos: ${puntos}`;
+            document.getElementById('vidas').textContent = `❤️ Vidas: ${vidas}`;
+        }
+
+        // Mostrar modal de nivel completado
+        function mostrarModalNivel() {
+            nivelActual++;
+            
+            if (nivelActual > 5) {
+                mostrarVictoria();
+                return;
+            }
+            
+            document.getElementById('nivel-completado-texto').textContent = `¡Has completado el Nivel ${nivelActual - 1}!`;
+            document.getElementById('puntos-nivel').textContent = puntos;
+            document.getElementById('modal-nivel').style.display = 'flex';
+        }
+
+        // Cerrar modal
+        function cerrarModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            
+            if (modalId === 'modal-nivel') {
+                mostrarNivel();
+                mostrarPregunta();
+            }
+        }
+
+        // Mostrar victoria
+        function mostrarVictoria() {
+            document.getElementById('puntos-final').textContent = puntos;
+            document.getElementById('modal-victoria').style.display = 'flex';
+            
+            // Mostrar luz esparciéndose
+            mostrarLuz();
+        }
+
+        // Mostrar derrota
+        function mostrarDerrota() {
+            document.getElementById('puntos-derrota').textContent = puntos;
+            document.getElementById('modal-derrota').style.display = 'flex';
+        }
+
+        // Reiniciar juego
+        function reiniciarJuego() {
+            cerrarModal('modal-victoria');
+            cerrarModal('modal-derrota');
+            cerrarModal('modal-nivel');
+            document.getElementById('luz').style.display = 'none';
+            
+            // Reiniciar variables
+            nivelActual = 1;
+            preguntaActual = 0;
+            puntos = 0;
+            vidas = 3;
+            
+            // Ocultar elementos del juego
+            document.getElementById('barra-superior').style.display = 'none';
+            document.getElementById('nivel-container').style.display = 'none';
+            document.getElementById('pregunta-container').style.display = 'none';
+            document.getElementById('progreso-container').style.display = 'none';
+            document.getElementById('botones-container').style.display = 'none';
+            
+            // Mostrar pantalla de inicio
+            document.getElementById('inicio').style.display = 'block';
+        }
+
+        // Usar pista
+        function usarPista() {
+            if (puntos >= 50) {
+                puntos -= 50;
+                const pregunta = preguntas.filter(p => p.nivel === nivelActual)[preguntaActual];
+                alert(`💡 PISTA:\nLa respuesta correcta contiene la palabra: "${pregunta.respuestas[pregunta.correcta].split(' ')[0]}"`);
+                actualizarUI();
+            } else {
+                alert('¡Necesitas al menos 50 puntos para usar una pista!');
+            }
+        }
+
+        // Salir del juego
+        function salirJuego() {
+            if (confirm('¿Estás seguro de que quieres salir del viaje misionero?')) {
+                reiniciarJuego();
+            }
+        }
+
+        // Luz esparciéndose (simulación de "corrientes de clara luz")
+        function mostrarLuz() {
+            const contenedor = document.getElementById('luz');
+            contenedor.style.display = 'block';
+            
+            // Crear 15 rayos de luz que se expanden desde el centro
+            for (let i = 0; i < 15; i++) {
+                const rayo = document.createElement('div');
+                rayo.className = 'rayo';
+                
+                // Posicionar aleatoriamente alrededor del centro
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 100 + Math.random() * 200;
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight / 2;
+                
+                rayo.style.left = `${centerX + Math.cos(angle) * distance}px`;
+                rayo.style.top = `${centerY + Math.sin(angle) * distance}px`;
+                rayo.style.width = `${30 + Math.random() * 40}px`;
+                rayo.style.height = `${30 + Math.random() * 40}px`;
+                
+                // Colores diferentes para cada rayo
+                const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7'];
+                rayo.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                contenedor.appendChild(rayo);
+                
+                // Eliminar el rayo después de la animación
+                setTimeout(() => {
+                    rayo.remove();
+                }, 3000);
+            }
+            
+            // Ocultar contenedor después de 4 segundos
+            setTimeout(() => {
+                contenedor.style.display = 'none';
+                // Limpiar cualquier rayo restante
+                contenedor.innerHTML = '';
+            }, 4000);
+        }
+
+        // Volver al inicio
+        function volverInicio() {
+            window.location.href = '../index.html';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌙 El Clamor de Medianoche 🌙</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #juego-container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Pantalla de inicio */
+        #inicio {
+            padding: 40px;
+            text-align: center;
+            background: linear-gradient(to bottom, #1a237e, #0d47a1);
+            color: white;
+        }
+
+        #inicio h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        #inicio p {
+            font-size: 1.2em;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+
+        .btn-iniciar {
+            background: linear-gradient(to right, #FFD700, #FFA500);
+            color: #8B4513;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.3em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+        }
+
+        .btn-iniciar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-iniciar:active {
+            transform: scale(0.98);
+        }
+
+        /* Barra superior */
+        #barra-superior {
+            background: #2C3E50;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        #puntos {
+            background: linear-gradient(to right, #27AE60, #2ECC71);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 1.1em;
+        }
+
+        #vidas {
+            background: linear-gradient(to right, #E74C3C, #C0392B);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 1.1em;
+        }
+
+        /* Nivel actual */
+        #nivel-container {
+            padding: 20px 30px;
+            text-align: center;
+            background: linear-gradient(to right, #3498DB, #2980B9);
+            color: white;
+        }
+
+        #nivel-titulo {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+
+        #nivel-descripcion {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        /* Pregunta */
+        #pregunta-container {
+            padding: 30px;
+            text-align: center;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        #pregunta-texto {
+            font-size: 1.6em;
+            color: #2C3E50;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        /* Respuestas */
+        #respuestas-container {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-respuesta {
+            background: linear-gradient(to right, #F9F9F9, #E0E0E0);
+            border: 3px solid #3498DB;
+            border-radius: 15px;
+            padding: 15px 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            font-weight: bold;
+            color: #2C3E50;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-respuesta:hover {
+            background: linear-gradient(to right, #E3F2FD, #BBDEFB);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-respuesta:active {
+            transform: translateY(1px);
+        }
+
+        .btn-respuesta.correcta {
+            background: linear-gradient(to right, #D4EDDA, #28A745);
+            border-color: #28A745;
+            color: white;
+            animation: bounce 0.5s;
+        }
+
+        .btn-respuesta.incorrecta {
+            background: linear-gradient(to right, #F8D7DA, #DC3545);
+            border-color: #DC3545;
+            color: white;
+            animation: shake 0.5s;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        /* Progreso */
+        #progreso-container {
+            padding: 15px 30px;
+            background: #ECF0F1;
+            text-align: center;
+            font-weight: bold;
+            color: #2C3E50;
+        }
+
+        /* Botones inferiores */
+        #botones-container {
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            background: #F8F9FA;
+            border-top: 2px solid #ECF0F1;
+        }
+
+        .btn-pista {
+            background: linear-gradient(to right, #FFF3CD, #FFC107);
+            color: #856404;
+            border: 2px solid #FFC107;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-pista:hover {
+            background: linear-gradient(to right, #FFEAA7, #FFB74D);
+            transform: scale(1.05);
+        }
+
+        .btn-salir {
+            background: linear-gradient(to right, #F8D7DA, #DC3545);
+            color: #721C24;
+            border: 2px solid #DC3545;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-salir:hover {
+            background: linear-gradient(to right, #F5C6CB, #C82333);
+            transform: scale(1.05);
+        }
+
+        .btn-inicio {
+            background: linear-gradient(to right, #4CAF50, #2E7D32);
+            color: white;
+            border: 2px solid #4CAF50;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-inicio:hover {
+            background: linear-gradient(to right, #66BB6A, #43A047);
+            transform: scale(1.05);
+        }
+
+        /* Pantallas modales */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: slideIn 0.5s;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal h2 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            color: #2C3E50;
+        }
+
+        .modal p {
+            font-size: 1.3em;
+            margin: 15px 0;
+            line-height: 1.6;
+        }
+
+        .btn-modal {
+            background: linear-gradient(to right, #3498DB, #2980B9);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-modal:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-modal.victoria {
+            background: linear-gradient(to right, #28A745, #20C997);
+        }
+
+        .btn-modal.derrota {
+            background: linear-gradient(to right, #DC3545, #C82333);
+        }
+
+        /* Efectos de transición */
+        .fade-in {
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            #inicio h1 {
+                font-size: 1.8em;
+            }
+            
+            #pregunta-texto {
+                font-size: 1.3em;
+            }
+            
+            .btn-respuesta {
+                font-size: 1em;
+                padding: 12px 15px;
+            }
+            
+            .btn-iniciar {
+                padding: 12px 30px;
+                font-size: 1.1em;
+            }
+        }
+
+        /* Insignias */
+        .insignia {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            margin: 5px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #8B4513;
+            font-weight: bold;
+            line-height: 60px;
+            font-size: 1.2em;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Animación de estrellas al ganar */
+        #stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div id="juego-container">
+        <!-- Pantalla de inicio -->
+        <div id="inicio">
+            <h1>🌙 EL CLAMOR DE MEDIANOCHE 🌙</h1>
+            <p>¡Hola, explorador de las profecías! ✨</p>
+            <p>Embárcate en una aventura fascinante por la historia del movimiento adventista.</p>
+            <p>Descubre cómo Guillermo Miller, Elena White y otros valientes predicaron sobre la segunda venida de Cristo.</p>
+            <p>¿Estás listo para viajar en el tiempo y descubrir el clamor de medianoche? 🚀</p>
+            <button class="btn-iniciar" onclick="iniciarJuego()">🎮 ¡COMENZAR AVENTURA!</button>
+        </div>
+
+        <!-- Barra superior -->
+        <div id="barra-superior" style="display: none;">
+            <div id="puntos">⭐ Puntos: 0</div>
+            <div id="vidas">❤️ Vidas: 3</div>
+        </div>
+
+        <!-- Nivel actual -->
+        <div id="nivel-container" style="display: none;">
+            <div id="nivel-titulo">NIVEL 1: Guillermo Miller y sus inicios</div>
+            <div id="nivel-descripcion">Un agricultor que estudió las profecías</div>
+        </div>
+
+        <!-- Pregunta -->
+        <div id="pregunta-container" style="display: none;">
+            <div id="pregunta-texto">¿Qué profecía estudió Guillermo Miller?</div>
+            <div id="respuestas-container">
+                <button class="btn-respuesta" onclick="responder(0)">Ángeles</button>
+                <button class="btn-respuesta" onclick="responder(1)">Daniel 8:14</button>
+                <button class="btn-respuesta" onclick="responder(2)">Estrellas</button>
+            </div>
+        </div>
+
+        <!-- Progreso -->
+        <div id="progreso-container" style="display: none;">
+            Pregunta <span id="pregunta-actual">1</span> de <span id="total-preguntas">5</span>
+        </div>
+
+        <!-- Botones inferiores -->
+        <div id="botones-container" style="display: none;">
+            <button class="btn-pista" onclick="usarPista()">💡 Pista (-50 puntos)</button>
+            <button class="btn-salir" onclick="salirJuego()">🚪 Salir</button>
+            <button class="btn-inicio" onclick="volverInicio()">🏠 Volver al Inicio</button>
+        </div>
+    </div>
+
+    <!-- Modal Victoria -->
+    <div id="modal-victoria" class="modal">
+        <div class="modal-content">
+            <h2>🏆 ¡FELICIDADES! 🏆</h2>
+            <p>¡Has completado todos los niveles!</p>
+            <p>----------</p>
+            <p><strong>Puntos totales:</strong> <span id="puntos-final">0</span></p>
+            <p>----------</p>
+            <p>¡Eres un verdadero explorador de las profecías! ✨</p>
+            <div style="margin-top: 20px;">
+                <div style="margin: 15px 0;">
+                    <span class="insignia">1</span>
+                    <span class="insignia">2</span>
+                    <span class="insignia">3</span>
+                    <span class="insignia">4</span>
+                    <span class="insignia">5</span>
+                </div>
+                <p>Todas las insignias desbloqueadas</p>
+            </div>
+            <button class="btn-modal victoria" onclick="reiniciarJuego()">🔄 ¡Jugar de nuevo!</button>
+            <button class="btn-modal" onclick="cerrarModal('modal-victoria')">❌ Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Modal Derrota -->
+    <div id="modal-derrota" class="modal">
+        <div class="modal-content">
+            <h2>😢 ¡OH NO! 😢</h2>
+            <p>Has perdido todas tus vidas.</p>
+            <p>----------</p>
+            <p><strong>Puntos finales:</strong> <span id="puntos-derrota">0</span></p>
+            <p>----------</p>
+            <p>¡No te rindas! Inténtalo de nuevo. 💪</p>
+            <button class="btn-modal derrota" onclick="reiniciarJuego()">🔄 ¡Intentar de nuevo!</button>
+            <button class="btn-modal" onclick="cerrarModal('modal-derrota')">❌ Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Modal Nivel Completado -->
+    <div id="modal-nivel" class="modal">
+        <div class="modal-content">
+            <h2>🎉 ¡NIVEL COMPLETADO! 🎉</h2>
+            <p id="nivel-completado-texto">¡Excelente trabajo!</p>
+            <p>----------</p>
+            <p><strong>Puntos actuales:</strong> <span id="puntos-nivel">0</span></p>
+            <button class="btn-modal" onclick="cerrarModal('modal-nivel')">➡️ ¡Siguiente nivel!</button>
+        </div>
+    </div>
+
+    <!-- Estrellas -->
+    <canvas id="stars" style="display: none;"></canvas>
+
+    <script>
+        // Variables del juego
+        let nivelActual = 1;
+        let preguntaActual = 0;
+        let puntos = 0;
+        let vidas = 3;
+        let preguntas = [];
+        let respuestaCorrectaIndex = 0;
+
+        // Cargar preguntas
+        function cargarPreguntas() {
+            // NIVEL 1: Guillermo Miller y sus inicios
+            preguntas.push({
+                nivel: 1,
+                texto: "¿Qué profecía estudió Guillermo Miller?",
+                respuestas: ["Apocalipsis 12", "Daniel 8:14", "Mateo 24"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 1,
+                texto: "¿Cuál era la profesión de Guillermo Miller antes de predicar?",
+                respuestas: ["Soldado", "Agricultor", "Maestro"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 1,
+                texto: "¿Qué creía Miller que significaba 'la purificación del santuario'?",
+                respuestas: ["La purificación de la tierra por fuego", "La limpieza del templo", "El bautismo de los creyentes"],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 1,
+                texto: "¿Cuántos años estuvo Miller rechazando el llamado a predicar?",
+                respuestas: ["3 años", "5 años", "7 años"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 1,
+                texto: "¿Dónde oró Miller cuando recibió la invitación a predicar?",
+                respuestas: ["En la iglesia", "Detrás del granero", "En su casa"],
+                correcta: 1
+            });
+
+            // NIVEL 2: La predicación y el movimiento adventista
+            preguntas.push({
+                nivel: 2,
+                texto: "¿Qué señal del cielo ocurrió el 13 de noviembre de 1833?",
+                respuestas: ["Eclipse solar", "Caída de estrellas", "Luna roja"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 2,
+                texto: "¿Qué revista imprimió Josué Himes?",
+                respuestas: ["The Signs of the Times", "La Esperanza", "El Mensajero"],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 2,
+                texto: "¿Qué predicador metodista se unió a Miller?",
+                respuestas: ["Josías Litch", "Josué Wolf", "Carlos Fitch"],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 2,
+                texto: "¿Qué creó Carlos Fitch con la ayuda de Apolo Hale?",
+                respuestas: ["Un libro", "La carta profética", "Una iglesia"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 2,
+                texto: "¿Quién era conocido como 'el capitán de los pioneros'?",
+                respuestas: ["Guillermo Miller", "José Bates", "Hiram Edson"],
+                correcta: 1
+            });
+
+            // NIVEL 3: El Gran Chasco de 1844
+            preguntas.push({
+                nivel: 3,
+                texto: "¿Qué día se esperaba que viniera Jesús en 1844?",
+                respuestas: ["13 de noviembre", "22 de octubre", "31 de octubre"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 3,
+                texto: "¿Qué mensaje urgente predicaron después del congreso?",
+                respuestas: ["¡Arrepentíos!", "¡Viene el esposo, salid a recibirle!", "¡El fin está cerca!"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 3,
+                texto: "¿Cómo se llamó el evento cuando Jesús no vino el 22 de octubre?",
+                respuestas: ["El Gran Chasco", "La Gran Decepción", "El Error de Miller"],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 3,
+                texto: "¿Qué milagro ocurrió con la siembra de papas después del chasco?",
+                respuestas: ["Se multiplicaron", "Fueron preservadas mientras otras fueron destruidas", "Se convirtieron en oro"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 3,
+                texto: "¿En qué libro bíblico estaba profetizado el Gran Chasco?",
+                respuestas: ["Daniel 8", "Apocalipsis 10:9-10", "Mateo 24"],
+                correcta: 1
+            });
+
+            // NIVEL 4: Las visiones de Elena White
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Quién recibió la primera visión después del Gran Chasco?",
+                respuestas: ["Guillermo Miller", "Elena White", "José Bates"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Qué vio Elena en su primera visión?",
+                respuestas: ["Un sendero por encima de la tierra", "Ángeles cantando", "Jesús descendiendo"],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Qué representaba la luz brillante al principio del sendero?",
+                respuestas: ["La Biblia", "El clamor de medianoche", "El Espíritu Santo"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Cuántos años tenía Elena cuando fue bautizada?",
+                respuestas: ["10 años", "12 años", "14 años"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿En qué ciudad nació Elena White?",
+                respuestas: ["Portland", "Gorham, Maine", "Boston"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Qué le pasó a Elena cuando regresaba de la escuela?",
+                respuestas: ["Se cayó", "Le pegaron una pedrada en la nariz", "Se perdió"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Qué entendió Hiram Edson sobre la purificación del santuario?",
+                respuestas: ["Que era en la tierra", "Que Cristo purificaba el Santuario Celestial", "Que era simbólico"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 4,
+                texto: "¿Qué entendieron que el 22 de octubre era realmente?",
+                respuestas: ["El fin del mundo", "El comienzo, no el fin", "Un error de cálculo"],
+                correcta: 1
+            });
+
+            // NIVEL 5: El mensaje final y el sábado
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Quién testificó sobre la observancia del sábado a Frederick Wheeler?",
+                respuestas: ["Elena White", "Raquel Oakes", "José Bates"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Qué escribió Tomas Preble sobre el sábado?",
+                respuestas: ["Un libro", "Un tratado", "Una carta"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Qué dijo José Bates cuando cruzaba el puente de Fairhaven?",
+                respuestas: ["¡El sábado es el día del Señor!", "¡Jesús viene pronto!", "¡Guardemos el sábado!"],
+                correcta: 0
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Qué libro escribió José Bates sobre el sábado?",
+                respuestas: ["El Sábado como Día de Reposo", "La Señal Perpetua", "Ambos anteriores"],
+                correcta: 2
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Quiénes empezaron a guardar el sábado en agosto de 1846?",
+                respuestas: ["Guillermo Miller", "Elena y Jaime White", "José Bates"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Qué mensaje proclaman millones de guardadores del sábado hoy?",
+                respuestas: ["El amor de Dios", "Jesús viene pronto", "La importancia del sábado"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Qué vio Elena cuando se elevó por encima del mundo?",
+                respuestas: ["El cielo", "Un sendero recto y angosto", "Ángeles volando"],
+                correcta: 1
+            });
+
+            preguntas.push({
+                nivel: 5,
+                texto: "¿Qué mensaje de los ángeles se proclama hoy en todo el mundo?",
+                respuestas: ["El mensaje de los tres ángeles", "El mensaje de salvación", "El mensaje del amor"],
+                correcta: 0
+            });
+        }
+
+        // Iniciar juego
+        function iniciarJuego() {
+            cargarPreguntas();
+            nivelActual = 1;
+            preguntaActual = 0;
+            puntos = 0;
+            vidas = 3;
+            
+            // Ocultar pantalla de inicio
+            document.getElementById('inicio').style.display = 'none';
+            
+            // Mostrar elementos del juego
+            document.getElementById('barra-superior').style.display = 'flex';
+            document.getElementById('nivel-container').style.display = 'block';
+            document.getElementById('pregunta-container').style.display = 'block';
+            document.getElementById('progreso-container').style.display = 'block';
+            document.getElementById('botones-container').style.display = 'flex';
+            
+            // Actualizar UI
+            mostrarNivel();
+            mostrarPregunta();
+            actualizarUI();
+        }
+
+        // Mostrar nivel
+        function mostrarNivel() {
+            const nivelTitulo = document.getElementById('nivel-titulo');
+            const nivelDescripcion = document.getElementById('nivel-descripcion');
+            const nivelContainer = document.getElementById('nivel-container');
+
+            switch(nivelActual) {
+                case 1:
+                    nivelTitulo.textContent = "NIVEL 1: Guillermo Miller y sus inicios";
+                    nivelDescripcion.textContent = "Un agricultor que estudió las profecías";
+                    nivelContainer.style.background = "linear-gradient(to right, #3498DB, #2980B9)";
+                    break;
+                case 2:
+                    nivelTitulo.textContent = "NIVEL 2: La predicación y el movimiento adventista";
+                    nivelDescripcion.textContent = "El clamor se extendió por todo el país";
+                    nivelContainer.style.background = "linear-gradient(to right, #9B59B6, #8E44AD)";
+                    break;
+                case 3:
+                    nivelTitulo.textContent = "NIVEL 3: El Gran Chasco de 1844";
+                    nivelDescripcion.textContent = "La prueba de fe más grande";
+                    nivelContainer.style.background = "linear-gradient(to right, #E74C3C, #C0392B)";
+                    break;
+                case 4:
+                    nivelTitulo.textContent = "NIVEL 4: Las visiones de Elena White";
+                    nivelDescripcion.textContent = "Luz después de la oscuridad";
+                    nivelContainer.style.background = "linear-gradient(to right, #27AE60, #219653)";
+                    break;
+                case 5:
+                    nivelTitulo.textContent = "NIVEL 5: El mensaje final y el sábado";
+                    nivelDescripcion.textContent = "La verdad que perdura";
+                    nivelContainer.style.background = "linear-gradient(to right, #F39C12, #E67E22)";
+                    break;
+            }
+        }
+
+        // Mostrar pregunta
+        function mostrarPregunta() {
+            const preguntasNivel = preguntas.filter(p => p.nivel === nivelActual);
+            
+            if (preguntaActual >= preguntasNivel.length) {
+                // Completar nivel
+                mostrarModalNivel();
+                return;
+            }
+            
+            const pregunta = preguntasNivel[preguntaActual];
+            document.getElementById('pregunta-texto').textContent = pregunta.texto;
+            
+            // Mezclar respuestas
+            const respuestasMezcladas = [...Array(pregunta.respuestas.length).keys()].sort(() => Math.random() - 0.5);
+            
+            const botonesRespuesta = document.querySelectorAll('.btn-respuesta');
+            botonesRespuesta.forEach((btn, index) => {
+                if (index < pregunta.respuestas.length) {
+                    btn.textContent = pregunta.respuestas[respuestasMezcladas[index]];
+                    btn.className = 'btn-respuesta';
+                    btn.dataset.indiceOriginal = respuestasMezcladas[index];
+                    btn.style.display = 'block';
+                } else {
+                    btn.style.display = 'none';
+                }
+            });
+            
+            // Guardar respuesta correcta
+            respuestaCorrectaIndex = respuestasMezcladas.indexOf(pregunta.correcta);
+            
+            // Actualizar progreso
+            document.getElementById('pregunta-actual').textContent = preguntaActual + 1;
+            document.getElementById('total-preguntas').textContent = preguntasNivel.length;
+        }
+
+        // Responder pregunta
+        function responder(indice) {
+            const botonesRespuesta = document.querySelectorAll('.btn-respuesta');
+            
+            // Desactivar todos los botones temporalmente
+            botonesRespuesta.forEach(btn => {
+                if (btn.style.display !== 'none') {
+                    btn.disabled = true;
+                }
+            });
+            
+            // Verificar respuesta
+            if (indice === respuestaCorrectaIndex) {
+                // Respuesta correcta
+                puntos += 100;
+                preguntaActual++;
+                
+                // Marcar como correcta
+                botonesRespuesta[indice].classList.add('correcta');
+                
+                // Alerta de correcto
+                setTimeout(() => {
+                    alert('¡Correcto! 🎉\n+100 puntos');
+                    botonesRespuesta.forEach(btn => {
+                        btn.disabled = false;
+                        btn.className = 'btn-respuesta';
+                    });
+                    mostrarPregunta();
+                    actualizarUI();
+                }, 500);
+            } else {
+                // Respuesta incorrecta
+                vidas--;
+                
+                // Marcar como incorrecta
+                botonesRespuesta[indice].classList.add('incorrecta');
+                botonesRespuesta[respuestaCorrectaIndex].classList.add('correcta');
+                
+                // Alerta de incorrecto
+                setTimeout(() => {
+                    alert('¡Incorrecto! 😔\n-1 vida');
+                    botonesRespuesta.forEach(btn => {
+                        btn.disabled = false;
+                        btn.className = 'btn-respuesta';
+                    });
+                    
+                    if (vidas <= 0) {
+                        mostrarDerrota();
+                    } else {
+                        mostrarPregunta();
+                        actualizarUI();
+                    }
+                }, 500);
+            }
+        }
+
+        // Actualizar UI
+        function actualizarUI() {
+            document.getElementById('puntos').textContent = `⭐ Puntos: ${puntos}`;
+            document.getElementById('vidas').textContent = `❤️ Vidas: ${vidas}`;
+        }
+
+        // Mostrar modal de nivel completado
+        function mostrarModalNivel() {
+            nivelActual++;
+            
+            if (nivelActual > 5) {
+                mostrarVictoria();
+                return;
+            }
+            
+            document.getElementById('nivel-completado-texto').textContent = `¡Has completado el Nivel ${nivelActual - 1}!`;
+            document.getElementById('puntos-nivel').textContent = puntos;
+            document.getElementById('modal-nivel').style.display = 'flex';
+        }
+
+        // Cerrar modal
+        function cerrarModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            
+            if (modalId === 'modal-nivel') {
+                mostrarNivel();
+                mostrarPregunta();
+            }
+        }
+
+        // Mostrar victoria
+        function mostrarVictoria() {
+            document.getElementById('puntos-final').textContent = puntos;
+            document.getElementById('modal-victoria').style.display = 'flex';
+            
+            // Mostrar estrellas
+            mostrarEstrellas();
+        }
+
+        // Mostrar derrota
+        function mostrarDerrota() {
+            document.getElementById('puntos-derrota').textContent = puntos;
+            document.getElementById('modal-derrota').style.display = 'flex';
+        }
+
+        // Reiniciar juego
+        function reiniciarJuego() {
+            cerrarModal('modal-victoria');
+            cerrarModal('modal-derrota');
+            cerrarModal('modal-nivel');
+            document.getElementById('stars').style.display = 'none';
+            
+            // Reiniciar variables
+            nivelActual = 1;
+            preguntaActual = 0;
+            puntos = 0;
+            vidas = 3;
+            
+            // Ocultar elementos del juego
+            document.getElementById('barra-superior').style.display = 'none';
+            document.getElementById('nivel-container').style.display = 'none';
+            document.getElementById('pregunta-container').style.display = 'none';
+            document.getElementById('progreso-container').style.display = 'none';
+            document.getElementById('botones-container').style.display = 'none';
+            
+            // Mostrar pantalla de inicio
+            document.getElementById('inicio').style.display = 'block';
+        }
+
+        // Usar pista
+        function usarPista() {
+            if (puntos >= 50) {
+                puntos -= 50;
+                const pregunta = preguntas.filter(p => p.nivel === nivelActual)[preguntaActual];
+                alert(`💡 PISTA:\nLa respuesta correcta contiene la palabra: "${pregunta.respuestas[pregunta.correcta].split(' ')[0]}"`);
+                actualizarUI();
+            } else {
+                alert('¡Necesitas al menos 50 puntos para usar una pista!');
+            }
+        }
+
+        // Salir del juego
+        function salirJuego() {
+            if (confirm('¿Estás seguro de que quieres salir?')) {
+                reiniciarJuego();
+            }
+        }
+
+        // Estrellas
+        function mostrarEstrellas() {
+            const canvas = document.getElementById('stars');
+            canvas.style.display = 'block';
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const starCount = 100;
+            const stars = [];
+
+            for (let i = 0; i < starCount; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 3 + 1,
+                    speed: Math.random() * 2 + 0.5,
+                    opacity: Math.random()
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                stars.forEach(star => {
+                    star.y -= star.speed;
+                    
+                    if (star.y < 0) {
+                        star.y = canvas.height;
+                        star.x = Math.random() * canvas.width;
+                    }
+                    
+                    ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+            
+            // Ocultar estrellas después de 5 segundos
+            setTimeout(() => {
+                canvas.style.display = 'none';
+            }, 5000);
+        }
+
+        // Volver al inicio
+        function volverInicio() {
+            window.location.href = '../index.html';
+        }
+    </script>
+</body>
+</html>
