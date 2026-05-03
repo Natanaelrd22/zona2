@@ -1,20 +1,6 @@
-# Editor directories and files
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# OS files
+# Archivos de sistema
 .DS_Store
 Thumbs.db
 
-# Logs
-*.log
-npm-debug.log*
-
-# Optional npm cache directory
-.npm
-
-# Node modules (if needed)
-# node_modules/
+# Configuración de editores
+.vscode/

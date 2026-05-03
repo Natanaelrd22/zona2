@@ -86,6 +86,51 @@ body {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
+/* Estilos para el Menú Desplegable (Dropdown) */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--white);
+    min-width: 180px;
+    box-shadow: var(--shadow-lg);
+    z-index: 1000;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0;
+    list-style: none;
+    top: 100%;
+    left: 0;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.dropdown-content li {
+    width: 100%;
+}
+
+.dropdown-content li a {
+    color: var(--text-dark) !important;
+    padding: 0.75rem 1.25rem !important;
+    display: block;
+    text-align: left;
+    transition: background 0.2s, color 0.2s;
+    font-weight: normal;
+}
+
+.dropdown-content li a:hover {
+    background-color: var(--bg-light) !important;
+    color: var(--primary-color) !important;
+}
+
+/* Mostrar en escritorio al pasar el mouse */
+@media (min-width: 769px) {
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+}
+
 /* Container */
 .container {
     max-width: 1200px;
@@ -609,6 +654,22 @@ body {
 
     .cards-grid {
         grid-template-columns: 1fr;
+    }
+
+    /* Ajustes móviles para el dropdown */
+    .dropdown-content {
+        position: static;
+        background-color: rgba(255, 255, 255, 0.1);
+        box-shadow: none;
+        padding-left: 1.5rem;
+    }
+    
+    .nav-menu.active .dropdown-content {
+        display: block;
+    }
+    
+    .dropdown-content li a {
+        color: var(--white) !important;
     }
 }
 
