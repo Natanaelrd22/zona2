@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historia Denominacional - Menú de Juegos</title>
+    <style>
+        :root {
+            --bg: #f0f2f5;
+            --text: #1c1e21;
+            --primary: #2c3e50;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            text-align: center;
+        }
+
+        header {
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 10px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-top: 8px solid var(--primary);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            margin: 10px 0;
+            font-size: 1.4em;
+        }
+
+        .card p {
+            font-size: 0.95em;
+            color: #606770;
+            line-height: 1.4;
+        }
+
+        /* Colores por Clase */
+        .amigo { border-top-color: #2c3e50; }
+        .compañero { border-top-color: #1a237e; }
+        .explorador { border-top-color: #1b5e20; }
+        .orientador { border-top-color: #0d47a1; }
+        .viajero { border-top-color: #4a148c; }
+        .guias { border-top-color: #8b0000; }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: opacity 0.3s;
+        }
+        .btn-back:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🏛️ Historia Denominacional</h1>
+        <p>Selecciona tu clase para comenzar el repaso interactivo</p>
+        <a href="index.html" class="btn-back">🏠 Volver al Inicio</a>
+    </header>
+
+    <div class="grid">
+        <a href="hd_amigo.html" class="card amigo">
+            <div class="icon">🛡️</div>
+            <h3>Clase de Amigo</h3>
+            <p>El Conflicto de los Siglos y los primeros cristianos.</p>
+        </a>
+        <a href="hd_compañero.html" class="card compañero">
+            <div class="icon">🕯️</div>
+            <h3>Clase de Compañero</h3>
+            <p>Guillermo Miller y el Clamor de Medianoche.</p>
+        </a>
+        <a href="hd_explorador.html" class="card explorador">
+            <div class="icon">🚀</div>
+            <h3>Clase de Explorador</h3>
+            <p>El surgimiento de la iglesia y "Cuéntaselo al Mundo".</p>
+        </a>
+        <a href="hd_orientador.html" class="card orientador">
+            <div class="icon">🌍</div>
+            <h3>Clase de Orientador</h3>
+            <p>Cómo se esparció el mensaje por todo el mundo.</p>
+        </a>
+        <a href="hd_viajero.html" class="card viajero">
+            <div class="icon">🕊️</div>
+            <h3>Clase de Viajero</h3>
+            <p>Vida, visiones e influencia de Elena G. de White.</p>
+        </a>
+        <a href="hd_guias.html" class="card guias">
+            <div class="icon">🧭</div>
+            <h3>Guías Mayores</h3>
+            <p>Historia general, la DIA y la obra en Rep. Dominicana.</p>
+        </a>
+    </div>
+</div>
+
+</body>
+</html>

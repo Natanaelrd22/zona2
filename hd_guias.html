@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego: Historia Denominacional - Guías Mayores</title>
+    <style>
+        :root {
+            --primary: #8b0000;
+            --secondary: #daa520;
+            --accent: #b22222;
+            --success: #228b22;
+            --bg: #fffaf0;
+            --text: #8b0000;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fffaf0 0%, #faebd7 100%);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            width: 90%;
+            max-width: 700px;
+            padding: 30px;
+            text-align: center;
+            border-top: 5px solid var(--secondary);
+        }
+
+        h1 { color: var(--primary); margin-bottom: 10px; }
+        h2 { color: var(--secondary); margin-bottom: 20px; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); }
+        p { line-height: 1.6; font-size: 1.1em; }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            font-weight: bold;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            margin: 10px;
+        }
+
+        .btn:hover {
+            background-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .btn-option {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            text-align: left;
+            background-color: #f8f9fa;
+            color: var(--text);
+            border: 2px solid #dee2e6;
+        }
+
+        .btn-option:hover {
+            background-color: #fff8dc;
+            border-color: var(--secondary);
+        }
+
+        .btn-option.correct {
+            background-color: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .btn-option.incorrect {
+            background-color: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .hidden { display: none; }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--secondary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .feedback.correct { background-color: #d4edda; color: #155724; }
+        .feedback.incorrect { background-color: #f8d7da; color: #721c24; }
+
+        .level-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Pantalla de Inicio -->
+    <div id="start-screen">
+        <h1>🛤️ Historia Denominacional</h1>
+        <h2>Juego de Conocimiento - Guías Mayores</h2>
+        <p>Demuestra lo que sabes sobre los pioneros, el Gran Chasco, la División Interamericana y el surgimiento de la iglesia en República Dominicana.</p>
+        <p><strong>Instrucciones:</strong></p>
+        <ul style="text-align: left; display: inline-block;">
+            <li>El juego tiene <strong>5 niveles</strong> con 10 preguntas cada uno (50 preguntas en total).</li>
+            <li>Selecciona la respuesta que creas correcta.</li>
+            <li>Recibirás retroalimentación inmediata.</li>
+            <li>Al final, obtendrás un rango especial según tu puntuación.</li>
+        </ul>
+        <br>
+        <button class="btn" onclick="startGame()">¡Comenzar Aventura! 🧭</button>
+        <br>
+        <button class="btn" style="background-color: #6c757d;" onclick="location.href='historia_hd.html'">🏠 Volver al Menú</button>
+    </div>
+
+    <!-- Pantalla de Juego -->
+    <div id="game-screen" class="hidden">
+        <div class="stats">
+            <span id="level-display">Nivel 1</span>
+            <span id="score-display">Puntos: 0</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="level-badge" id="level-title">Nivel 1: Guillermo Miller y el Gran Chasco</div>
+        <h3 id="question-text">Pregunta aquí</h3>
+        <div id="options-container"></div>
+        <div id="feedback" class="feedback hidden"></div>
+        <button id="next-btn" class="btn hidden" onclick="nextQuestion()">Siguiente Pregunta ➡️</button>
+    </div>
+
+    <!-- Pantalla de Fin de Nivel -->
+    <div id="level-screen" class="hidden">
+        <h2 id="level-complete-title">¡Nivel Completado!</h2>
+        <p id="level-complete-msg"></p>
+        <button class="btn" onclick="startNextLevel()">Continuar al Siguiente Nivel ➡️</button>
+    </div>
+
+    <!-- Pantalla Final -->
+    <div id="end-screen" class="hidden">
+        <h1>🏆 ¡Juego Terminado!</h1>
+        <h2 id="final-score"></h2>
+        <p id="final-rank"></p>
+        <p>Gracias por repasar la historia de nuestra iglesia y la División Interamericana.</p>
+        <button class="btn" onclick="location.reload()">🔄 Jugar de Nuevo</button>
+        <button class="btn" style="background-color: #6c757d;" onclick="location.href='historia_hd.html'">🏠 Volver al Menú</button>
+    </div>
+</div>
+
+<script>
+    // Base de datos de 50 preguntas basadas en el PDF HD-GUIAS..pdf
+    const gameData = [
+        {
+            levelName: "Nivel 1: Guillermo Miller y el Gran Chasco",
+            questions: [
+                { q: "¿Cuántos años estudió la Biblia Guillermo Miller motivado por la guerra de 1812?", options: ["16 años", "10 años", "5 años", "20 años"], correct: 0 },
+                { q: "¿Qué profecía estudió Miller que lo llevó a calcular el fin del mundo?", options: ["Daniel 8:14 (las 2,300 tardes y mañanas)", "Apocalipsis 14 (los tres ángeles)", "Daniel 9:25 (las 70 semanas)", "Mateo 24 (las señales)"], correct: 0 },
+                { q: "¿En qué congreso se concluyó que Cristo vendría el 22 de octubre de 1844?", options: ["New Hampshire (17 de agosto de 1844)", "Battle Creek (1844)", "Portland (1843)", "Washington D.C. (1844)"], correct: 0 },
+                { q: "¿Cómo se le llamó al mensaje urgente '¡Ahí viene el esposo, Salid a recibidle!'?", options: ["El Clamor de Medianoche", "El Mensaje de los Tres Ángeles", "La Gran Esperanza", "El Último Aviso"], correct: 0 },
+                { q: "¿Qué vio Hiram Edson en su visión del 23 de octubre de 1844 en un campo de maíz?", options: ["A Cristo pasando del Lugar Santo al Santísimo", "La destrucción de la tierra por fuego", "A los ángeles recogiendo la cosecha", "El descenso de la Nueva Jerusalén"], correct: 0 },
+                { q: "¿Quiénes estudiaron junto a Hiram Edson sobre la doctrina del Santuario?", options: ["O.R.L Crozier y F.B Hahn", "Jaime White y José Bates", "Urías Smith y John N. Andrews", "Guillermo Miller y Josué Himes"], correct: 0 },
+                { q: "¿Quién sostuvo que la inmortalidad se obtenía única y exclusivamente en la segunda venida?", options: ["George Storrs", "Thomas Preble", "Raquel Oaks", "Frederick Wheeler"], correct: 0 },
+                { q: "¿Con quién se casó Elena Gould Harmon el 30 de agosto de 1846?", options: ["James Springer White", "John Nevins Andrews", "José Bates", "Urías Smith"], correct: 0 },
+                { q: "¿En qué año se realizaron los primeros congresos sobre el sábado?", options: ["1848", "1844", "1863", "1888"], correct: 0 },
+                { q: "¿Qué significaba para Miller la 'purificación del santuario'?", options: ["La destrucción de la tierra por fuego", "La limpieza del templo en Jerusalén", "El bautismo del Espíritu Santo", "El inicio del juicio investigador"], correct: 0 }
+            ]
+        },
+        {
+            levelName: "Nivel 2: Doctrinas y Organización de la Iglesia",
+            questions: [
+                { q: "¿Qué líderes motivaron la creencia en la vigencia de la Ley de Dios y el sábado?", options: ["Raquel Oaks, Frederick Wheeler, T. Preble, J. Bates y J.N. Andrews", "Miller, Himes, Fitch y Litch", "Crozier, Hahn, Storrs y Casebeer", "Kellogg, Waggoner, Jones y Haskell"], correct: 0 },
+                { q: "¿Cuándo se organizó oficialmente la Iglesia Adventista del Séptimo Día?", options: ["21 de mayo de 1863", "22 de octubre de 1844", "15 de septiembre de 1874", "1 de enero de 1924"], correct: 0 },
+                { q: "¿Cuántos días después de la organización Elena tuvo la visión de la Reforma Pro-Salud?", options: ["15 días (5 de junio de 1863)", "30 días", "Un año exacto", "40 días"], correct: 0 },
+                { q: "¿Quién fue el primer presidente de la Asociación General en 1863?", options: ["John Byington", "Jaime White", "Urías Smith", "Elena G. de White"], correct: 0 },
+                { q: "¿Quién fue elegido como secretario en la primera Asociación General?", options: ["Urías Smith", "John N. Andrews", "José Bates", "Charles M. Kinney"], correct: 0 },
+                { q: "¿Cómo se llamó inicialmente la institución médica establecida por la iglesia?", options: ["Instituto Occidental de Reforma Pro-Salud", "Sanatorio de Battle Creek", "Hospital de Loma Linda", "Clínica de Central Consuelo"], correct: 0 },
+                { q: "¿En qué año fue elegido John Harvey Kellogg como director del Sanatorio?", options: ["1876", "1863", "1888", "1901"], correct: 0 },
+                { q: "¿A qué país fue enviado oficialmente J.N. Andrews como misionero el 15 de septiembre de 1874?", options: ["Suiza", "Inglaterra", "Australia", "Haití"], correct: 0 },
+                { q: "¿Quién fue considerado el primer pastor afroamericano ordenado ministro en 1889?", options: ["Charles M. Kinney", "Henry Williams", "Michel Nord Isaac", "James Williams"], correct: 0 },
+                { q: "¿En qué congreso de 1888 se definió la posición de la iglesia en cuanto a sus doctrinas (según el texto)?", options: ["Indianápolis", "Battle Creek", "Minneapolis", "Washington D.C."], correct: 0 }
+            ]
+        },
+        {
+            levelName: "Nivel 3: La División Interamericana (DIA)",
+            questions: [
+                { q: "¿Quién envió paquetes de tratados a las Antillas desde Inglaterra en 1878?", options: ["J.N. Loughborough", "D.T. Bourdeau", "Jaime White", "Charles Moulton"], correct: 0 },
+                { q: "¿A quién llegaron los primeros tratados que hablaban sobre el sábado en Jamaica?", options: ["Henry Williams", "Michel Nord Isaac", "Casiano Carrión", "Luis Gómez"], correct: 0 },
+                { q: "¿En qué año el Pastor L.C. Chadwick bautizó a los primeros adventistas de la División Interamericana?", options: ["1892", "1878", "1907", "1922"], correct: 0 },
+                { q: "¿Quiénes viajaron a Panamá y cruzaron a lomo de mula en 1868?", options: ["D.T. Bourdeau y J.N. Loughborough", "Jaime White y Elena White", "J.N. Andrews y José Bates", "Charles Moulton y H.D. Casebeer"], correct: 0 },
+                { q: "¿En qué año se organizó oficialmente la División Interamericana?", options: ["1922", "1906", "1914", "1941"], correct: 0 },
+                { q: "¿Dónde se fijó inicialmente la sede de la División Interamericana en 1922?", options: ["Balboa, Zona del Canal de Panamá", "La Habana, Cuba", "Miami, Florida", "Santo Domingo"], correct: 0 },
+                { q: "¿A qué ciudad se mudó la sede de la DIA en 1941?", options: ["La Habana, Cuba", "Coconut Grove, Florida", "San Juan, Puerto Rico", "Ciudad de México"], correct: 0 },
+                { q: "¿En qué año la sede de la DIA se trasladó a Coconut Grove, Miami?", options: ["1946", "1958", "1977", "1980"], correct: 0 },
+                { q: "¿En qué año la División Interamericana se convirtió en la mayor del mundo en miembros bautizados?", options: ["1980", "1977", "2000", "1994"], correct: 0 },
+                { q: "¿De cuántas Uniones está compuesta actualmente la División Interamericana según el texto?", options: ["22 Uniones", "15 Uniones", "10 Uniones", "30 Uniones"], correct: 0 }
+            ]
+        },
+        {
+            levelName: "Nivel 4: La Misión Dominicana",
+            questions: [
+                { q: "¿En qué año llegó el colportor Charles Moulton a la República Dominicana?", options: ["1907", "1892", "1917", "1924"], correct: 0 },
+                { q: "¿Dónde se organizó la primera Escuela Sabática en 1908?", options: ["Central Consuelo", "Cruz Mendoza", "Av. Mella, Santo Domingo", "Jábaba, Moca"], correct: 0 },
+                { q: "¿Quién fue el primer converso de la Escuela Sabática de Cruz Mendoza en 1909?", options: ["Casiano Carrión", "María Williams", "Luis Gómez", "James Williams"], correct: 0 },
+                { q: "¿Qué pastor organizó la primera iglesia Adventista en 1917?", options: ["H.D. Casebeer", "Williams Steel", "Charles Moulton", "Pedro Nygaard"], correct: 0 },
+                { q: "¿Qué fenómeno natural destruyó la iglesia de la avenida Mella en 1930?", options: ["El ciclón San Zenón", "Un terremoto", "Un huracán", "Una inundación"], correct: 0 },
+                { q: "¿Quién fue el primer presidente de la Misión Dominicana organizada el 1 de enero de 1924?", options: ["Pr. Williams Steel", "Pr. Pedro Nygaard", "Pr. C.V. Achenback", "Pr. R.G. Jones"], correct: 0 },
+                { q: "¿Cuántos miembros y iglesias tenía la Misión Dominicana al organizarse en 1924?", options: ["147 miembros y 2 iglesias", "500 miembros y 5 iglesias", "743 miembros y 10 iglesias", "50 miembros y 1 iglesia"], correct: 0 },
+                { q: "¿En qué año se celebró la primera investidura de clases M.V. en Santiago?", options: ["1942", "1935", "1963", "1924"], correct: 0 },
+                { q: "¿En qué fecha se le otorgó a la Misión Central Dominicana el status de Asociación?", options: ["1 de agosto de 1963", "1 de enero de 1924", "Julio de 1986", "1990"], correct: 0 },
+                { q: "¿Qué misión se creó en 1986 con 11 pastores y 6,000 miembros?", options: ["Misión Dominicana del Sur", "Misión Dominicana del Este", "Misión Dominicana del Norte", "Misión del Sureste"], correct: 0 }
+            ]
+        },
+        {
+            levelName: "Nivel 5: El Norte, la Unión y Reorganizaciones",
+            questions: [
+                { q: "¿En qué año ayudó Charles Moulton a establecer la iglesia en Jábaba, Moca?", options: ["1921", "1908", "1972", "1990"], correct: 0 },
+                { q: "¿Qué obreros laicos usaban 'motor 50' para expandir el mensaje en el Norte en los años 70?", options: ["José María Cepeda, José Núñez, el Hno. Rey", "Luis Gómez, Casiano Carrión, Fernando Brito", "H.D. Casebeer, Williams Steel, Nygaard", "Arístides González, Oreste Natera, Esteban Galva"], correct: 0 },
+                { q: "¿Quién fue el primer presidente de la Misión Dominicana del Norte fundada en 1972?", options: ["Pr. José Espinosa", "Pr. Arístides González", "Pr. Esteban Galva", "Pr. Oreste Natera"], correct: 0 },
+                { q: "¿En qué año la Misión Dominicana del Norte cambió a Asociación Dominicana del Norte?", options: ["Junio de 1990", "1972", "1998", "2004"], correct: 0 },
+                { q: "¿En qué año se organizó la Misión Dominicana del Sureste?", options: ["1998", "1986", "1990", "2004"], correct: 0 },
+                { q: "¿En qué año se organizó la Misión Dominicana del Nordeste?", options: ["2004", "1998", "1990", "1972"], correct: 0 },
+                { q: "¿Qué unión desapareció en 1994 para dar paso a la Unión Dominicana?", options: ["Unión Antillana", "Unión Franco-Haitiana", "Unión del Caribe", "Unión Centroamericana"], correct: 0 },
+                { q: "El 15 de enero de 1994, ¿con cuántos miembros se organizó la Unión Dominicana?", options: ["87,486 miembros", "14,000 miembros", "322 miembros", "6,000 miembros"], correct: 0 },
+                { q: "¿Quién fue el primer presidente de la Unión Dominicana?", options: ["Pr. Arístides González", "Lic. German Lorenzo", "Pr. Filiberto Martínez", "Pr. José Espinosa"], correct: 0 },
+                { q: "¿Quién fue el primer secretario tesorero de la Unión Dominicana?", options: ["Lic. German Lorenzo", "Pr. Arístides González", "Pr. Filiberto Martínez", "Pr. Williams Steel"], correct: 0 }
+            ]
+        }
+    ];
+
+    let currentLevel = 0;
+    let currentQuestion = 0;
+    let score = 0;
+    let levelScore = 0;
+
+    function startGame() {
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('game-screen').classList.remove('hidden');
+        currentLevel = 0;
+        currentQuestion = 0;
+        score = 0;
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        const levelData = gameData[currentLevel];
+        const qData = levelData.questions[currentQuestion];
+        
+        document.getElementById('level-display').textContent = `Nivel ${currentLevel + 1} de ${gameData.length}`;
+        document.getElementById('score-display').textContent = `Puntos: ${score}`;
+        document.getElementById('level-title').textContent = levelData.levelName;
+        document.getElementById('question-text').textContent = `Pregunta ${currentQuestion + 1}/10: ${qData.q}`;
+        
+        const totalQuestions = (currentLevel * 10) + currentQuestion;
+        const progress = (totalQuestions / 50) * 100;
+        document.getElementById('progress-fill').style.width = `${progress}%`;
+
+        const optionsContainer = document.getElementById('options-container');
+        optionsContainer.innerHTML = '';
+        
+        let optionsWithIndex = qData.options.map((opt, index) => ({ text: opt, originalIndex: index }));
+        optionsWithIndex.sort(() => Math.random() - 0.5);
+
+        optionsWithIndex.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'btn btn-option';
+            btn.textContent = opt.text;
+            btn.onclick = () => checkAnswer(opt.originalIndex, qData.correct, btn);
+            optionsContainer.appendChild(btn);
+        });
+
+        document.getElementById('feedback').classList.add('hidden');
+        document.getElementById('next-btn').classList.add('hidden');
+    }
+
+    function checkAnswer(selectedIndex, correctIndex, btnElement) {
+        const buttons = document.querySelectorAll('.btn-option');
+        buttons.forEach(btn => btn.disabled = true);
+
+        const feedback = document.getElementById('feedback');
+        feedback.classList.remove('hidden', 'correct', 'incorrect');
+
+        if (selectedIndex === correctIndex) {
+            btnElement.classList.add('correct');
+            feedback.classList.add('correct');
+            feedback.textContent = "¡Correcto! 🎉";
+            score += 10;
+            levelScore++;
+        } else {
+            btnElement.classList.add('incorrect');
+            buttons.forEach(btn => {
+                const levelData = gameData[currentLevel];
+                const qData = levelData.questions[currentQuestion];
+                if (btn.textContent === qData.options[correctIndex]) {
+                    btn.classList.add('correct');
+                }
+            });
+            feedback.classList.add('incorrect');
+            feedback.textContent = "Incorrecto. La respuesta correcta está resaltada en verde.";
+        }
+
+        document.getElementById('score-display').textContent = `Puntos: ${score}`;
+        document.getElementById('next-btn').classList.remove('hidden');
+    }
+
+    function nextQuestion() {
+        currentQuestion++;
+        if (currentQuestion < 10) {
+            loadQuestion();
+        } else {
+            showLevelComplete();
+        }
+    }
+
+    function showLevelComplete() {
+        document.getElementById('game-screen').classList.add('hidden');
+        document.getElementById('level-screen').classList.remove('hidden');
+        
+        const msg = document.getElementById('level-complete-msg');
+        if (levelScore >= 8) {
+            msg.textContent = `¡Excelente! Completaste el ${gameData[currentLevel].levelName} con ${levelScore}/10 respuestas correctas.`;
+        } else if (levelScore >= 5) {
+            msg.textContent = `¡Bien hecho! Completaste el ${gameData[currentLevel].levelName} con ${levelScore}/10 respuestas correctas. ¡Sigue practicando!`;
+        } else {
+            msg.textContent = `Completaste el ${gameData[currentLevel].levelName} con ${levelScore}/10 respuestas correctas. Te animo a repasar el material y seguir adelante.`;
+        }
+    }
+
+    function startNextLevel() {
+        currentLevel++;
+        levelScore = 0;
+        if (currentLevel < gameData.length) {
+            currentQuestion = 0;
+            document.getElementById('level-screen').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('hidden');
+            loadQuestion();
+        } else {
+            showFinalResults();
+        }
+    }
+
+    function showFinalResults() {
+        document.getElementById('level-screen').classList.add('hidden');
+        document.getElementById('end-screen').classList.remove('hidden');
+        
+        document.getElementById('final-score').textContent = `Puntuación Final: ${score} / 500`;
+        
+        let rank = "";
+        if (score >= 450) {
+            rank = "🏆 Rango: Guía Mayor Historiador. ¡Conoces la historia denominacional a la perfección!";
+        } else if (score >= 350) {
+            rank = "🥇 Rango: Explorador de la División. ¡Tienes un excelente conocimiento de la iglesia!";
+        } else if (score >= 250) {
+            rank = "🥈 Rango: Colportor de la Misión. Vas por buen camino, sigue repasando.";
+        } else {
+            rank = "🥉 Rango: Aventurero en Formación. Te animo a leer nuevamente el manual de Guías Mayores.";
+        }
+        
+        document.getElementById('final-rank').textContent = rank;
+    }
+</script>
+
+</body>
+</html>

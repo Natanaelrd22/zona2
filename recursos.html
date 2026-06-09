@@ -47,7 +47,7 @@
                     + Nueva Categoría
                 </button>
                 <button class="btn btn-primary" onclick="openRecursoModal()">
-                    + Subir Archivo
+                    + Agregar Recurso
                 </button>
             </div>
         </div>
@@ -89,7 +89,7 @@
     <div id="recursoModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Subir Archivo</h2>
+                <h2>Agregar Recurso</h2>
                 <button class="modal-close" onclick="closeModal('recursoModal')">×</button>
             </div>
             
@@ -107,14 +107,14 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="recursoArchivo">Archivo *</label>
-                    <input type="file" id="recursoArchivo" required>
+                    <label for="recursoUrl">Enlace del Archivo (URL) *</label>
+                    <input type="url" id="recursoUrl" placeholder="https://ejemplo.com/archivo.pdf" required>
                 </div>
                 
                 <div id="recursoAlert"></div>
                 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Subir</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
                     <button type="button" class="btn btn-secondary" onclick="closeModal('recursoModal')">Cancelar</button>
                 </div>
             </form>
